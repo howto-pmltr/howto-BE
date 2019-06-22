@@ -24,3 +24,6 @@ coverage
 
 # Prevent gitsync conflicts
 .gitsync_lock
+
+# Ignore local notes
+Notes.md
