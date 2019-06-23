@@ -1,6 +1,14 @@
 'use strict'
 
 /**
+ * Load environment variables
+ */
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
+/**
  * Dependencies
  */
 
