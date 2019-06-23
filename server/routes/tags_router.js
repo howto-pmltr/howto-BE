@@ -7,12 +7,19 @@
 const express = require('express')
 const require_body = require('../middleware/checks/require_body')
 const TagsController = require('../controllers/TagsController')
+const AuthController = require('../controllers/AuthController')
 
 /**
  * Define router
  */
 
 const router = express.Router()
+
+/**
+ * Middleware
+ */
+
+router.use(AuthController.require_jwt_token)
 
 /**
  * Routes
