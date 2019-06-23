@@ -37,6 +37,8 @@ app.use(express.json())
  */
 
 app.use('/', require('./routes/root_router'))
+app.use('/articles', require('./routes/articles_router'))
+app.use('/tags', require('./routes/tags_router'))
 
 /**
  * Start server

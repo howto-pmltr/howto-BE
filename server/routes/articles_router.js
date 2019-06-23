@@ -1,0 +1,42 @@
+'use strict'
+
+/**
+ * Dependencies
+ */
+
+const express = require('express')
+const require_body = require('../middleware/checks/require_body')
+const ArticlesController = require('../controllers/ArticlesController')
+
+/**
+ * Define router
+ */
+
+const router = express.Router()
+
+/**
+ * Routes
+ *   GET,POST /articles
+ */
+
+router.route('/')
+  .get(ArticlesController.index)
+  .all(require_body(['title', 'description']))
+  .post(ArticlesController.create)
+
+/**
+ * Routes
+ *   GET,PUT,DELETE /articles/:id
+ */
+
+router.route('/:id')
+  .all(ArticlesController.find_or_404)
+  .get(ArticlesController.show)
+  .put(ArticlesController.update)
+  .delete(ArticlesController.destroy)
+
+/**
+ * Export router
+ */
+
+module.exports = router
