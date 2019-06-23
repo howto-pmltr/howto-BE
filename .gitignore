@@ -27,3 +27,7 @@ coverage
 
 # Ignore local notes
 Notes.md
+
+# Ignore testing and development database
+test.sqlite3
+development.sqlite3
