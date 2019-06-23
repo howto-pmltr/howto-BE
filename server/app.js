@@ -43,6 +43,12 @@ app.use('/articles', require('./routes/articles_router'))
 app.use('/tags', require('./routes/tags_router'))
 
 /**
+ * Error Handlers
+ */
+
+app.use(require('./middleware/error_handler'))
+
+/**
  * Start server
  */
 
