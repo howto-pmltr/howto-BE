@@ -16,7 +16,7 @@ const router = express.Router()
 
 /**
  * Routes
- *   GET,POST /steps
+ *   GET,POST /articles/:article_id/steps
  */
 
 router.route('/')
@@ -26,7 +26,7 @@ router.route('/')
 
 /**
  * Routes
- *   GET,PUT,DELETE /steps/:id
+ *   GET,PUT,DELETE /articles/:article_id/steps/:id
  */
 
 router.route('/:id')

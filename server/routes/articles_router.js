@@ -39,9 +39,18 @@ router.route('/:id')
  * Mount steps sub-router
  */
 
-router.use('/:article_id',
+router.use('/:article_id/steps',
   ArticlesController.find_or_404,
   require('./steps_router')
+)
+
+/**
+ * Mount article_tags sub-router
+ */
+
+router.use('/:article_id/tags',
+  ArticlesController.find_or_404,
+  require('./article_tags_router')
 )
 
 /**
