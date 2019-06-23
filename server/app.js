@@ -6,6 +6,7 @@
 
 const express = require('express')
 const helmet = require('helmet')
+const cors = require('cors')
 
 /**
  * Constants
@@ -30,6 +31,7 @@ app.disable('x-powered-by')
  */
 
 app.use(helmet())
+app.use(cors())
 app.use(express.json())
 
 /**
