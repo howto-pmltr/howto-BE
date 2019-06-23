@@ -36,6 +36,15 @@ router.route('/:id')
   .delete(ArticlesController.destroy)
 
 /**
+ * Mount steps sub-router
+ */
+
+router.use('/:article_id',
+  ArticlesController.find_or_404,
+  require('./steps_router')
+)
+
+/**
  * Export router
  */
 
