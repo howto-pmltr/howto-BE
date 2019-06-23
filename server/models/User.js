@@ -4,7 +4,9 @@
  * Dependencies
  */
 
+const jsonwebtoken = require('jsonwebtoken')
 const db = require('../db/client')
+const secrets = require('../config/secrets')
 
 /**
  * Define model
@@ -52,6 +54,19 @@ class User {
     } else {
       return true
     }
+  }
+
+  static async generate_token(user) {
+    const payload = {
+      subject: user.id,
+      email: user.email
+    }
+
+    const options = {
+      expiresIn: '1d',
+    }
+
+    return jsonwebtoken.sign(payload, secrets.jsonwebtoken_secret, options)
   }
 }
 
