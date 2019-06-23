@@ -1,18 +1,21 @@
 {
   "name": "howto-BE",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "How-to Backend Server",
+  "main": "server/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/app.js",
+    "start:server": "nodemon server/app.js",
+    "test": "cross-env NODE_ENV=test jest",
+    "test:watch": "cross-env NODE_ENV=test jest --watch --verbose"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/howto-pmltr/howto-BE.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Andy Bettisworth",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/howto-pmltr/howto-BE/issues"
   },
