@@ -50,6 +50,14 @@ class UsersController {
       res.status(500).json({ error: { message: 'Internal Server Error' }})
     }
   }
+
+  static async signout(req, res) {
+    res.sendStatus(200)
+  }
+
+  static async deactivate(req, res) {
+    res.sendStatus(200)
+  }
 }
 
 /**
