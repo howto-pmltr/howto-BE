@@ -16,12 +16,12 @@ class Step {
   }
 
   static async create(step) {
-    const [id] = await db('steps').insert({
+    const [ids] = await db('steps').insert({
       title: step.title,
       content: step.content
     }, ['id'])
 
-    const new_step = await db('steps').where({ id: id }).first()
+    const new_step = await db('steps').where({ id: ids.id }).first()
 
     return new_step
   }

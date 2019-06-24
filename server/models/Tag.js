@@ -16,11 +16,11 @@ class Tag {
   }
 
   static async create(tag) {
-    const [id] = await db('tags').insert({
+    const [ids] = await db('tags').insert({
       title: tag.title
     }, ['id'])
 
-    const new_tag = await db('tags').where({ id: id }).first()
+    const new_tag = await db('tags').where({ id: ids.id }).first()
 
     return new_tag
   }

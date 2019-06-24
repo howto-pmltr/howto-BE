@@ -23,9 +23,8 @@ class User {
       email: user.email,
       password_hash: user.password_hash
     }, ['id'])
-    console.log('ids', ids)
 
-    const new_user = await db('users').where({ id: ids[0] }).first()
+    const new_user = await db('users').where({ id: ids.id }).first()
 
     return new_user
   }
