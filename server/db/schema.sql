@@ -47,13 +47,13 @@ CREATE TABLE `article_tags` (
   `updated_at` datetime not null default CURRENT_TIMESTAMP
 );
 
--- CREATE TABLE `article_ratings` (
---   `id` integer not null primary key autoincrement,
---   `article_id` integer not null,
---   `user_email` text not null,
---   `rating` integer not null,
---   `created_at` datetime not null default CURRENT_TIMESTAMP,
---   `updated_at` datetime not null default CURRENT_TIMESTAMP
--- );
---
+CREATE TABLE `article_ratings` (
+  `id` integer not null primary key autoincrement,
+  `article_id` integer not null,
+  `rating` integer not null,
+  `user_username` text,
+  `created_at` datetime not null default CURRENT_TIMESTAMP,
+  `updated_at` datetime not null default CURRENT_TIMESTAMP
+);
+
 COMMIT TRANSACTION;
