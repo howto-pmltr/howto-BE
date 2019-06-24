@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
     table.text('title').notNullable()
     table.text('description')
     table.text('image_path')
+    table.integer('likes_count')
     table.datetime('published_at')
     table.timestamps(true, true)
   })

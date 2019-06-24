@@ -16,7 +16,7 @@ CREATE TABLE `articles` (
   `image_path` text,
   `description` text,
   `published_at` datetime,
-  -- TODO likes_count integer
+  `likes_count` integer,
   `created_at` datetime not null default CURRENT_TIMESTAMP,
   `updated_at` datetime not null default CURRENT_TIMESTAMP
 );
