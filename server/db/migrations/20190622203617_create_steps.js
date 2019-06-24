@@ -7,6 +7,7 @@ exports.up = function(knex, Promise) {
     table.integer('order').notNullable()
     table.text('title').notNullable()
     table.text('content')
+    table.text('image_path')
     table.timestamps(true ,true)
   })
 }
