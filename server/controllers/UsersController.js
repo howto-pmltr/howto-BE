@@ -24,6 +24,10 @@ class UsersController {
         return res.status(400).json({ error: { message: 'User with that email already exists.' } })
       }
 
+      if (req.body.password.length < 6) {
+        return res.status(400).json({ error: { message: 'Password is too short (minimum 6 characters).' } })
+      }
+
       const password_hash = bcryptjs.hashSync(req.body.password, 13)
 
       const user = await User.create({
