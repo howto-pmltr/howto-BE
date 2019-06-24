@@ -14,6 +14,16 @@ const User = require('../models/User')
 class UsersController {
   static async signup(req, res) {
     try {
+      const user_username = await User.find({ username: req.body.username })
+      if (user_username) {
+        return res.status(400).json({ error: { message: 'User with that username already exists.' } })
+      }
+
+      const user_email = await User.find({ email: req.body.email })
+      if (user_email) {
+        return res.status(400).json({ error: { message: 'User with that email already exists.' } })
+      }
+
       const password_hash = bcryptjs.hashSync(req.body.password, 13)
 
       const user = await User.create({
