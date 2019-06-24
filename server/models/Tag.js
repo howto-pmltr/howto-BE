@@ -18,7 +18,7 @@ class Tag {
   static async create(tag) {
     const [id] = await db('tags').insert({
       title: tag.title
-    })
+    }, ['id'])
 
     const new_tag = await db('tags').where({ id: id }).first()
 

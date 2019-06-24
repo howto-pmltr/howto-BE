@@ -18,7 +18,7 @@ class Article {
   static async create(article) {
     const [id] = await db('articles').insert({
       title: article.title
-    })
+    }, ['id'])
 
     const new_article = await db('articles').where({ id: id }).first()
 

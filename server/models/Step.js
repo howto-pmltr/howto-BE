@@ -19,7 +19,7 @@ class Step {
     const [id] = await db('steps').insert({
       title: step.title,
       content: step.content
-    })
+    }, ['id'])
 
     const new_step = await db('steps').where({ id: id }).first()
 

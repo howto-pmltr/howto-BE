@@ -19,7 +19,7 @@ class ArticleTag {
     const [id] = await db('article_tags').insert({
       article_id: tag.article_id,
       tag_title: tag.tag_title
-    })
+    }, ['id'])
 
     const new_tag = await db('article_tags').where({ id: id }).first()
 
