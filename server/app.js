@@ -55,7 +55,7 @@ app.use('/tags', require('./routes/tags_router'))
  * Error Handlers
  */
 
-app.use(require('./middleware/error_handler'))
+app.use(require('./middleware/errors/error_handlers'))
 
 /**
  * Start server
