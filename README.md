@@ -2,6 +2,8 @@
 
 This is the backend server for the How-to project.
 
+[Technical Design Document](https://docs.google.com/document/d/1-PyCnS_z0tpPOpsk8uSG-0ZPBWNjkNzCvtlJoW-CyEk/edit)
+
 ## Getting started
 
 Install dependencies:
