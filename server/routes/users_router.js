@@ -20,7 +20,7 @@ const router = express.Router()
  */
 
 router.route('/signup')
-  .all(require_body(['email', 'password']))
+  .all(require_body(['email', 'password'])) // TODO username, email, password
   .post(UsersController.signup)
 
 /**
@@ -29,7 +29,7 @@ router.route('/signup')
  */
 
 router.route('/signin')
-  .all(require_body(['email', 'password']))
+  .all(require_body(['email', 'password'])) // TODO username, password
   .post(UsersController.signin)
 
 /**
