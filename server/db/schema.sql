@@ -11,7 +11,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `articles` (
   `id` integer not null primary key autoincrement,
-  `author_email` text not null, -- author_username FK
+  `author_username` text not null,
   `title` text not null,
   `image_path` text,
   `description` text,
