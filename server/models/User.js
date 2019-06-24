@@ -19,7 +19,9 @@ class User {
 
   static async create(user) {
     const [id] = await db('users').insert({
-      email: user.email
+      username: user.username,
+      email: user.email,
+      password_hash: user.password_hash
     })
 
     const new_user = await db('users').where({ id: id }).first()
