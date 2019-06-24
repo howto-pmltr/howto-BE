@@ -18,13 +18,14 @@ class User {
   }
 
   static async create(user) {
-    const [id] = await db('users').insert({
+    const [ids] = await db('users').insert({
       username: user.username,
       email: user.email,
       password_hash: user.password_hash
     }, ['id'])
+    console.log('ids', ids)
 
-    const new_user = await db('users').where({ id: id }).first()
+    const new_user = await db('users').where({ id: ids[0] }).first()
 
     return new_user
   }
