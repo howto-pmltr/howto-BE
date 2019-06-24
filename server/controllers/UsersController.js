@@ -58,7 +58,7 @@ class UsersController {
           res.status(401).json({ error: { message: 'Invalid Credentials' }})
         }
       } else {
-        res.status(404).json({ error: { message: `User not found for ${req.body.email}` }})
+        res.status(404).json({ error: { message: `User not found for ${req.body.username}` }})
       }
     } catch(err) {
       console.error(err)
