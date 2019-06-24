@@ -22,7 +22,7 @@ class User {
       username: user.username,
       email: user.email,
       password_hash: user.password_hash
-    })
+    }, ['id'])
 
     const new_user = await db('users').where({ id: id }).first()
 
