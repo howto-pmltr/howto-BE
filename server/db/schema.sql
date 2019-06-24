@@ -12,8 +12,8 @@ CREATE TABLE `users` (
 CREATE TABLE `articles` (
   `id` integer not null primary key autoincrement,
   `author_email` text not null, -- author_username FK
-  -- TODO image_path
   `title` text not null,
+  `image_path` text,
   `description` text,
   `published_at` datetime,
   -- TODO likes_count integer
@@ -24,7 +24,7 @@ CREATE TABLE `articles` (
 CREATE TABLE `steps` (
   `id` integer not null primary key autoincrement,
   `article_id` integer not null,
-  -- TODO image_path
+  `image_path` text,
   `order` integer not null,
   `title` text not null,
   `content` text,

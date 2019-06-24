@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
     table.text('author_email').notNullable()
     table.text('title').notNullable()
     table.text('description')
+    table.text('image_path')
     table.datetime('published_at')
     table.timestamps(true, true)
   })
