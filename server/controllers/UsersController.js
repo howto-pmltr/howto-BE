@@ -17,6 +17,7 @@ class UsersController {
       const password_hash = bcryptjs.hashSync(req.body.password, 13)
 
       const user = await User.create({
+        username: req.body.username,
         email: req.body.email,
         password_hash: password_hash
       })
@@ -32,7 +33,7 @@ class UsersController {
 
   static async signin(req, res) {
     try {
-      const user = await User.find({ email: req.body.email })
+      const user = await User.find({ username: req.body.username })
 
       if (user) {
         if (bcryptjs.compareSync(req.body.password, user.password_hash)) {
