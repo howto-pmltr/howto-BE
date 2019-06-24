@@ -2,9 +2,9 @@ BEGIN TRANSACTION;
 
 CREATE TABLE `users` (
   `id` integer not null primary key autoincrement,
-  -- TODO username text not null unique
-  -- TODO password_hash (bcryptjs) min 6 characters
+  `username` text not null,
   `email` text not null,
+  `password_hash` text not null, -- TODO min 6 characters password pre-bcryptjs
   `created_at` datetime not null default CURRENT_TIMESTAMP,
   `updated_at` datetime not null default CURRENT_TIMESTAMP
 );
