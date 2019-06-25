@@ -42,9 +42,8 @@ class Article {
     return await db('articles').where(filter).first()
   }
 
-  static async update(id, article) {
+  static async update(id, article, user_id) {
     const changes = {}
-    console.log('article', article)
     if (article.title) changes.title = article.title
     if (article.image_path) changes.image_path = article.image_path
     if (article.description) changes.description = article.description
@@ -55,8 +54,13 @@ class Article {
     }
     changes.updated_at = new Date()
 
-    await db('articles').where({ id: id }).update(changes)
+    const user = await db('users').where({ id: user_id })
+    const old_article = await db('articles').where({ id: id }).first()
+    if (user.username !== old_article.author_username) {
+      return false
+    }
 
+    await old_article.update(changes)
     const new_article = await db('articles').where({ id: id }).first()
 
     return new_article

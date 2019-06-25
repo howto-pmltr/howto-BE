@@ -40,7 +40,8 @@ class ArticlesController {
 
   static async authors_index(req, res) {
     try {
-      const articles = await Article.all_authors(req.decoded.subject)
+      const user_id = req.decoded.subject
+      const articles = await Article.all_authors(user_id)
 
       res.status(200).json(articles)
     } catch(err) {
@@ -73,9 +74,14 @@ class ArticlesController {
 
   static async update(req, res) {
     try {
-      const article = await Article.update(req.params.id, req.body)
+      const user_id = req.decoded.subject
+      const article = await Article.update(req.params.id, req.body, user_id)
 
-      res.status(200).json(article)
+      if (article) {
+        res.status(200).json(article)
+      } else {
+        res.status(403).json({ error: { message: 'You can only edit your articles.' } })
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })
