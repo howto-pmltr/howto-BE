@@ -34,6 +34,10 @@ class Article {
 
   static async update(id, article) {
     const changes = {}
+    // TODO title
+    // TODO image_path
+    // TODO description
+    // TODO published_at ( if true/false { timestamp/null })
     changes.updated_at = new Date()
 
     await db('articles').where({ id: id }).update(changes)
