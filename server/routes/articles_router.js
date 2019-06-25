@@ -25,15 +25,12 @@ router.route('/')
 
 /**
  * Routes
- *   GET,PUT,DELETE /articles/:id
+ *   GET /articles/:id
  */
 
 router.route('/:id')
   .all(ArticlesController.find_or_404)
   .get(ArticlesController.show)
-  .all(AuthController.require_jwt_token)
-  .put(ArticlesController.update)
-  .delete(ArticlesController.destroy)
 
 /**
  * Mount steps sub-router

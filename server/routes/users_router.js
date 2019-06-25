@@ -63,6 +63,17 @@ router.route('/:id/articles')
   .post(ArticlesController.create)
 
 /**
+ * Routes
+ *   PUT,DELETE /users/:user_id/articles/:id
+ */
+
+router.route('/:user_id/articles/:id')
+  .all(ArticlesController.find_or_404)
+  .all(AuthController.require_jwt_token)
+  .put(ArticlesController.update)
+  .delete(ArticlesController.destroy)
+
+/**
  * Export router
  */
 
