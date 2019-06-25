@@ -26,12 +26,19 @@ class Article {
   }
 
   static async create(article) {
-    const [ids] = await db('articles').insert({
-      author_username: article.author_username,
-      title: article.title,
-      image_path: article.image_path,
-      description: article.description,
-    }, ['id'])
+    const changes = {}
+
+    if (article.author_username) changes.author_username = article.author_username
+    if (article.title) changes.title = article.title
+    if (article.image_path) changes.image_path = article.image_path
+    if (article.description) changes.description = article.description
+    if (article.published_at === 'true') {
+      changes.published_at = new Date()
+    } else {
+      changes.published_at = null
+    }
+
+    const [ids] = await db('articles').insert(changes, ['id'])
 
     const new_article = await db('articles').where({ id: ids.id }).first()
 
