@@ -39,9 +39,14 @@ class TagsController {
 
   static async create(req, res) {
     try {
-      const tag = await Tag.create(req.body)
+      const tag = await Tag.find({ title: req.body.title })
+      if (tag) {
+        return res.status(400).json({ error: { message: 'Tag with that title already exists' } })
+      }
 
-      res.status(201).json(tag)
+      const new_tag = await Tag.create(req.body)
+
+      res.status(201).json(new_tag)
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })
