@@ -4,7 +4,7 @@ CREATE TABLE `users` (
   `id` integer not null primary key autoincrement,
   `username` text not null,
   `email` text not null,
-  `password_hash` text not null, -- TODO min 6 characters password pre-bcryptjs
+  `password_hash` text not null,
   `created_at` datetime not null default CURRENT_TIMESTAMP,
   `updated_at` datetime not null default CURRENT_TIMESTAMP
 );
