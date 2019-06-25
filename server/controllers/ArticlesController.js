@@ -40,7 +40,7 @@ class ArticlesController {
 
   static async authors_index(req, res) {
     try {
-      const articles = await Article.all_authors(req.decoded.id)
+      const articles = await Article.all_authors(req.decoded.subject)
 
       res.status(200).json(articles)
     } catch(err) {
