@@ -52,12 +52,13 @@ router.route('/deactivate')
 
 /**
  * Routes
- *   POST /users/:id/articles
+ *   GET,POST /users/:id/articles
  */
 
-router.route('/')
+router.route('/:id/articles')
   .all(UsersController.find_or_404)
   .all(AuthController.require_jwt_token)
+  .get(ArticlesController.authors_index)
   .all(require_body(['title']))
   .post(ArticlesController.create)
 

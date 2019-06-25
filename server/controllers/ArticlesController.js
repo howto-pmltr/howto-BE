@@ -40,7 +40,6 @@ class ArticlesController {
 
   static async authors_index(req, res) {
     try {
-      // TODO ensure user exists for :id
       const articles = await Article.all_authors(req.params.id)
 
       res.status(200).json(articles)
