@@ -27,18 +27,6 @@ router.route('/')
   .post(TagsController.create)
 
 /**
- * Routes
- *   GET,PUT,DELETE /tags/:id
- */
-
-router.route('/:id')
-  .all(TagsController.find_or_404)
-  .get(TagsController.show)
-  .all(AuthController.require_jwt_token)
-  .put(TagsController.update)
-  .delete(TagsController.destroy)
-
-/**
  * Export router
  */
 
