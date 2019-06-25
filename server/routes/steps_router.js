@@ -21,7 +21,7 @@ const router = express.Router()
 
 router.route('/')
   .get(StepsController.index)
-  .all(require_body(['article_id', 'order', 'title']))
+  .all(require_body(['article_id', 'step_number', 'title']))
   .post(StepsController.create)
 
 /**

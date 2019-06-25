@@ -25,7 +25,7 @@ CREATE TABLE `steps` (
   `id` integer not null primary key autoincrement,
   `article_id` integer not null,
   `image_path` text,
-  `order` integer not null,
+  `step_number` integer not null,
   `title` text not null,
   `content` text,
   `created_at` datetime not null default CURRENT_TIMESTAMP,
