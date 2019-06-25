@@ -17,14 +17,11 @@ const router = express.Router()
 
 /**
  * Routes
- *   GET,POST /articles
+ *   GET /articles
  */
 
 router.route('/')
   .get(ArticlesController.published_index)
-  .all(AuthController.require_jwt_token)
-  .all(require_body(['title', 'description']))
-  .post(ArticlesController.create)
 
 /**
  * Routes

@@ -7,6 +7,8 @@
 const express = require('express')
 const require_body = require('../middleware/checks/require_body')
 const UsersController = require('../controllers/UsersController')
+const AuthController = require('../controllers/AuthController')
+const ArticlesController = require('../controllers/ArticlesController')
 
 /**
  * Define router
@@ -47,6 +49,17 @@ router.route('/signout')
 
 router.route('/deactivate')
   .post(UsersController.deactivate)
+
+/**
+ * Routes
+ *   POST /users/:id/articles
+ */
+
+router.route('/')
+  .all(UsersController.find_or_404)
+  .all(AuthController.require_jwt_token)
+  .all(require_body(['title', 'description']))
+  .post(ArticlesController.create)
 
 /**
  * Export router

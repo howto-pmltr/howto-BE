@@ -12,6 +12,21 @@ const User = require('../models/User')
  */
 
 class UsersController {
+  static async find_or_404(req, res, next) {
+    try {
+      const user = await User.find({ id: req.params.id })
+
+      if (user) {
+        next()
+      } else {
+        res.status(404).json({ error: { message: 'User not found' } })
+      }
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({ error: { message: 'Internal Server Error' } })
+    }
+  }
+
   static async signup(req, res) {
     try {
       const user_username = await User.find({ username: req.body.username })
