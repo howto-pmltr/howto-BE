@@ -58,7 +58,7 @@ router.route('/deactivate')
 router.route('/')
   .all(UsersController.find_or_404)
   .all(AuthController.require_jwt_token)
-  .all(require_body(['title', 'description']))
+  .all(require_body(['title']))
   .post(ArticlesController.create)
 
 /**
