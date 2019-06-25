@@ -16,18 +16,13 @@ const AuthController = require('../controllers/AuthController')
 const router = express.Router()
 
 /**
- * Middleware
- */
-
-router.use(AuthController.require_jwt_token)
-
-/**
  * Routes
  *   GET,POST /articles
  */
 
 router.route('/')
   .get(ArticlesController.index)
+  .all(AuthController.require_jwt_token)
   .all(require_body(['title', 'description']))
   .post(ArticlesController.create)
 
@@ -39,6 +34,7 @@ router.route('/')
 router.route('/:id')
   .all(ArticlesController.find_or_404)
   .get(ArticlesController.show)
+  .all(AuthController.require_jwt_token)
   .put(ArticlesController.update)
   .delete(ArticlesController.destroy)
 
