@@ -13,7 +13,7 @@ const Article = require('../models/Article')
 class ArticlesController {
   static async find_or_404(req, res, next) {
     try {
-      const article = await Article.find({ id: req.params.id })
+      const article = await Article.find({ id: (req.params.id || req.params.article_id) })
 
       if (article) {
         next()

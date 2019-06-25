@@ -33,15 +33,6 @@ router.route('/:id')
   .get(ArticlesController.show)
 
 /**
- * Mount steps sub-router
- */
-
-router.use('/:article_id/steps',
-  ArticlesController.find_or_404,
-  require('./steps_router')
-)
-
-/**
  * Mount article_tags sub-router
  */
 
