@@ -44,10 +44,11 @@ class Article {
 
   static async update(id, article) {
     const changes = {}
+    console.log('article', article)
     if (article.title) changes.title = article.title
     if (article.image_path) changes.image_path = article.image_path
     if (article.description) changes.description = article.description
-    if (article.published_at === true) {
+    if (article.published_at === 'true') {
       changes.published_at = new Date()
     } else {
       changes.published_at = null
