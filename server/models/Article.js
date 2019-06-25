@@ -11,8 +11,18 @@ const db = require('../db/client')
  */
 
 class Article {
-  static async all() {
-    return await db('articles')
+  static async all_published(filter) {
+    if (filter) {
+      return await db('articles').whereNotNull('published_at').where(filter)
+    } else {
+      return await db('articles').whereNotNull('published_at')
+    }
+  }
+
+  static async all_authors(id) {
+    const user = await db('users').where({ id: id }).first()
+
+    return await db('articles').where({ author_username: user.username })
   }
 
   static async create(article) {

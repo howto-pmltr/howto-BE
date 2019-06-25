@@ -21,7 +21,7 @@ const router = express.Router()
  */
 
 router.route('/')
-  .get(ArticlesController.index)
+  .get(ArticlesController.published_index)
   .all(AuthController.require_jwt_token)
   .all(require_body(['title', 'description']))
   .post(ArticlesController.create)

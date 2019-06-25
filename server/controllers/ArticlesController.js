@@ -26,9 +26,22 @@ class ArticlesController {
     }
   }
 
-  static async index(req, res) {
+  static async published_index(req, res) {
     try {
-      const articles = await Article.all()
+      let filter = {}
+      const articles = await Article.all_published()
+
+      res.status(200).json(articles)
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({ error: { message: 'Internal Server Error' } })
+    }
+  }
+
+  static async authors_index(req, res) {
+    try {
+      // TODO ensure user exists for :id
+      const articles = await Article.all_authors(req.params.id)
 
       res.status(200).json(articles)
     } catch(err) {
