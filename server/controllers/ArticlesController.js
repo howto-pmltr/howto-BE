@@ -105,7 +105,6 @@ class ArticlesController {
     try {
       const user_id = req.decoded.subject
       const article = await Article.destroy(req.params.id, user_id)
-      console.log('article', article)
 
       if (article) {
         res.status(200).json()
