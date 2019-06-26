@@ -36,22 +36,6 @@ router.route('/signin')
 
 /**
  * Routes
- *   POST /users/signout
- */
-
-router.route('/signout')
-  .post(UsersController.signout)
-
-/**
- * Routes
- *   POST /users/deactivate
- */
-
-router.route('/deactivate')
-  .post(UsersController.deactivate)
-
-/**
- * Routes
  *   GET,POST /users/:id/articles
  */
 
