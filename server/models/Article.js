@@ -38,7 +38,7 @@ class Article {
     }
 
     const user = await db('users').where({ id: user_id }).first()
-    article.author_username = user.author_username
+    article.author_username = user.username
 
     const [ids] = await db('articles').insert(changes, ['id'])
 
