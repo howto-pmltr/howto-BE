@@ -45,9 +45,16 @@ class Step {
     return await db('steps').where(filter).first()
   }
 
-  static async update(id, step) {
+  static async update(user_id, id, step) {
     const changes = {}
     changes.updated_at = new Date()
+
+    const step = await db('steps').where({ id: id }).first()
+    const user = await db('users').where({ id: user_id }).first()
+    const article = await db('articles').where({ id: step.article_id }).first()
+    if (user.username !== article.author_username) {
+      return false
+    }
 
     await db('steps').where({ id: id }).update(changes)
 
@@ -56,7 +63,14 @@ class Step {
     return new_step
   }
 
-  static async destroy(id) {
+  static async destroy(user_id, id) {
+    const step = await db('steps').where({ id: id }).first()
+    const user = await db('users').where({ id: user_id }).first()
+    const article = await db('articles').where({ id: step.article_id }).first()
+    if (user.username !== article.author_username) {
+      return false
+    }
+
     return await db('steps').where({ id: id }).del()
   }
 }
