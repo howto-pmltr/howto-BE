@@ -10,7 +10,7 @@ const ArticleTag = require('../models/ArticleTag')
  * Define controller
  */
 
-class ArticleArticleTagsController {
+class ArticleTagsController {
   static async find_or_404(req, res, next) {
     try {
       const tag = await ArticleTag.find({ id: req.params.id })
@@ -28,7 +28,7 @@ class ArticleArticleTagsController {
 
   static async index(req, res) {
     try {
-      const tags = await ArticleTag.all()
+      const tags = await ArticleTag.all({ article_id: req.params.article_id })
 
       res.status(200).json(tags)
     } catch(err) {
@@ -86,4 +86,4 @@ class ArticleArticleTagsController {
  * Export controller
  */
 
-module.exports = ArticleArticleTagsController
+module.exports = ArticleTagsController
