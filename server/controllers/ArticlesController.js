@@ -6,6 +6,7 @@
 
 const Article = require('../models/Article')
 const Step = require('../models/Step')
+const ArticleTag = require('../models/ArticleTag')
 
 /**
  * Define controller
@@ -77,6 +78,7 @@ class ArticlesController {
       const article = await Article.find({ id: req.params.id })
 
       article.steps = await Step.all({ article_id: article.id })
+      article.tags = await ArticleTag.all({ article_id: article.id })
 
       res.status(200).json(article)
     } catch(err) {

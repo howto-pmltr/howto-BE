@@ -11,8 +11,12 @@ const db = require('../db/client')
  */
 
 class Tag {
-  static async all() {
-    return await db('tags')
+  static async all(filter) {
+    if (filter) {
+      return await db('tags').where(filter).sortBy('title', 'asc')
+    } else {
+      return await db('tags').sortBy('title', 'asc')
+    }
   }
 
   static async create(tag) {
