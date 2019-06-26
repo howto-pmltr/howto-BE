@@ -13,7 +13,7 @@ const AuthController = require('../controllers/AuthController')
  * Define router
  */
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 /**
  * Routes

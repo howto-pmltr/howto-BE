@@ -14,7 +14,7 @@ const ArticlesController = require('../controllers/ArticlesController')
  * Define router
  */
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 /**
  * Routes

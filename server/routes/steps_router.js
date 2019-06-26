@@ -12,7 +12,7 @@ const StepsController = require('../controllers/StepsController')
  * Define router
  */
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 /**
  * Routes
