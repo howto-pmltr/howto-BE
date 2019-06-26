@@ -5,6 +5,8 @@
  */
 
 const Step = require('../models/Step')
+const Article = require('../models/Article')
+const ArticleTag = require('../models/ArticleTag')
 
 /**
  * Define controller
@@ -26,33 +28,20 @@ class StepsController {
     }
   }
 
-  static async index(req, res) {
-    try {
-      const steps = await Step.all()
-
-      res.status(200).json(steps)
-    } catch(err) {
-      console.error(err)
-      res.status(500).json({ error: { message: 'Internal Server Error' } })
-    }
-  }
-
   static async create(req, res) {
     try {
-      const step = await Step.create(req.body)
+      const user_id = req.decoded.subject
+      const step = await Step.create(user_id, req.params.article_id, req.body)
 
-      res.status(201).json(step)
-    } catch(err) {
-      console.error(err)
-      res.status(500).json({ error: { message: 'Internal Server Error' } })
-    }
-  }
+      if (step) {
+        const article = Article.find({ id: step.article_id })
+        article.steps = await Step.all({ article_id: article.id })
+        article.tags = await ArticleTag.all({ article_id: article.id })
 
-  static async show(req, res) {
-    try {
-      const step = await Step.find({ id: req.params.id })
-
-      res.status(200).json(step)
+        res.status(201).json(article)
+      } else {
+        res.status(403).json({ error: { message: 'You can only add steps to your articles.' } })
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })
@@ -61,9 +50,14 @@ class StepsController {
 
   static async update(req, res) {
     try {
-      const step = await Step.update(req.params.id, req.body)
+      const user_id = req.decoded.subject
+      const step = await Step.update(user_id, req.params.id, req.body)
 
-      res.status(200).json(step)
+      if (step) {
+        res.status(200).json(step)
+      } else {
+        res.status(403).json({ error: { message: 'You can only update your articles.' } })
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })
@@ -72,9 +66,14 @@ class StepsController {
 
   static async destroy(req, res) {
     try {
-      await Step.destroy(req.params.id)
+      const user_id = req.decoded.subject
+      const is_successful = await Step.destroy(user_id, req.params.id)
 
-      res.status(200).json()
+      if (is_successful) {
+        res.status(200).json()
+      } else {
+        res.status(403).json({ error: { message: 'You can only add steps to your articles.' } })
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })

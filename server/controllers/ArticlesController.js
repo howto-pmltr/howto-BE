@@ -5,6 +5,8 @@
  */
 
 const Article = require('../models/Article')
+const Step = require('../models/Step')
+const ArticleTag = require('../models/ArticleTag')
 
 /**
  * Define controller
@@ -13,7 +15,7 @@ const Article = require('../models/Article')
 class ArticlesController {
   static async find_or_404(req, res, next) {
     try {
-      const article = await Article.find({ id: req.params.id })
+      const article = await Article.find({ id: (req.params.id || req.params.article_id) })
 
       if (article) {
         next()
@@ -26,9 +28,31 @@ class ArticlesController {
     }
   }
 
-  static async index(req, res) {
+  static async published_index(req, res) {
     try {
-      const articles = await Article.all()
+      let filter = {}
+      if (req.query.q) filter.q = req.query.q
+      if (req.query.tags) filter.tags = req.query.tags
+      if (req.query.author) filter.author_username = req.query.author
+      let articles
+
+      if (Object.keys(filter).length > 0) {
+        articles = await Article.all_published(filter)
+      } else {
+        articles = await Article.all_published()
+      }
+
+      res.status(200).json(articles)
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({ error: { message: 'Internal Server Error' } })
+    }
+  }
+
+  static async authors_index(req, res) {
+    try {
+      const user_id = req.decoded.subject
+      const articles = await Article.all_authors(user_id)
 
       res.status(200).json(articles)
     } catch(err) {
@@ -39,7 +63,8 @@ class ArticlesController {
 
   static async create(req, res) {
     try {
-      const article = await Article.create(req.body)
+      const user_id = req.decoded.subject
+      const article = await Article.create(user_id, req.body)
 
       res.status(201).json(article)
     } catch(err) {
@@ -52,6 +77,9 @@ class ArticlesController {
     try {
       const article = await Article.find({ id: req.params.id })
 
+      article.steps = await Step.all({ article_id: article.id })
+      article.tags = await ArticleTag.all({ article_id: article.id })
+
       res.status(200).json(article)
     } catch(err) {
       console.error(err)
@@ -61,9 +89,14 @@ class ArticlesController {
 
   static async update(req, res) {
     try {
-      const article = await Article.update(req.params.id, req.body)
+      const user_id = req.decoded.subject
+      const article = await Article.update(req.params.id, req.body, user_id)
 
-      res.status(200).json(article)
+      if (article) {
+        res.status(200).json(article)
+      } else {
+        res.status(403).json({ error: { message: 'You can only edit your articles.' } })
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })
@@ -72,9 +105,14 @@ class ArticlesController {
 
   static async destroy(req, res) {
     try {
-      await Article.destroy(req.params.id)
+      const user_id = req.decoded.subject
+      const article = await Article.destroy(req.params.id, user_id)
 
-      res.status(200).json()
+      if (article) {
+        res.status(200).json()
+      } else {
+        res.status(403).json({ error: { message: 'You can only delete your articles.' } })
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })

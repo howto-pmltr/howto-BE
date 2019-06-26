@@ -4,7 +4,7 @@ CREATE TABLE `users` (
   `id` integer not null primary key autoincrement,
   `username` text not null,
   `email` text not null,
-  `password_hash` text not null, -- TODO min 6 characters password pre-bcryptjs
+  `password_hash` text not null,
   `created_at` datetime not null default CURRENT_TIMESTAMP,
   `updated_at` datetime not null default CURRENT_TIMESTAMP
 );
@@ -25,7 +25,7 @@ CREATE TABLE `steps` (
   `id` integer not null primary key autoincrement,
   `article_id` integer not null,
   `image_path` text,
-  `order` integer not null,
+  `step_number` integer not null,
   `title` text not null,
   `content` text,
   `created_at` datetime not null default CURRENT_TIMESTAMP,

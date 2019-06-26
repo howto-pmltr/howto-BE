@@ -11,17 +11,32 @@ const db = require('../db/client')
  */
 
 class Step {
-  static async all() {
-    return await db('steps')
+  static async all(filter) {
+    if (filter) {
+      return await db('steps').where(filter).orderBy('step_number', 'asc')
+    } else {
+      return await db('steps')
+    }
   }
 
-  static async create(step) {
-    const [ids] = await db('steps').insert({
-      title: step.title,
-      content: step.content
-    }, ['id'])
+  static async create(user_id, article_id, step) {
+    const changes = {}
 
-    const new_step = await db('steps').where({ id: ids.id }).first()
+    changes.article_id = article_id
+    if (step.image_path) changes.image_path = step.image_path
+    if (step.title) changes.title = step.title
+    if (step.content) changes.content = step.content
+    if (step.step_number) changes.step_number = step.step_number
+
+    const user = await db('users').where({ id: user_id }).first()
+    const article = await db('articles').where({ id: article_id }).first()
+    if (user.username !== article.author_username) {
+      return false
+    }
+
+    const [returning_obj] = await db('steps').insert(changes, ['id'])
+
+    const new_step = await db('steps').where({ id: returning_obj.id }).first()
 
     return new_step
   }
@@ -30,9 +45,20 @@ class Step {
     return await db('steps').where(filter).first()
   }
 
-  static async update(id, step) {
+  static async update(user_id, id, step) {
     const changes = {}
+    if (step.title) changes.title = step.title
+    if (step.image_path) changes.image_path = step.image_path
+    if (step.step_number) changes.step_number = step.step_number
+    if (step.content) changes.content = step.content
     changes.updated_at = new Date()
+
+    const old_step = await db('steps').where({ id: id }).first()
+    const user = await db('users').where({ id: user_id }).first()
+    const article = await db('articles').where({ id: old_step.article_id }).first()
+    if (!article || user.username !== article.author_username) {
+      return false
+    }
 
     await db('steps').where({ id: id }).update(changes)
 
@@ -41,7 +67,14 @@ class Step {
     return new_step
   }
 
-  static async destroy(id) {
+  static async destroy(user_id, id) {
+    const old_step = await db('steps').where({ id: id }).first()
+    const user = await db('users').where({ id: user_id }).first()
+    const article = await db('articles').where({ id: old_step.article_id }).first()
+    if (user.username !== article.author_username) {
+      return false
+    }
+
     return await db('steps').where({ id: id }).del()
   }
 }

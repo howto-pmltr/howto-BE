@@ -13,13 +13,7 @@ const AuthController = require('../controllers/AuthController')
  * Define router
  */
 
-const router = express.Router()
-
-/**
- * Middleware
- */
-
-router.use(AuthController.require_jwt_token)
+const router = express.Router({ mergeParams: true })
 
 /**
  * Routes
@@ -28,19 +22,9 @@ router.use(AuthController.require_jwt_token)
 
 router.route('/')
   .get(TagsController.index)
+  .all(AuthController.require_jwt_token)
   .all(require_body(['title']))
   .post(TagsController.create)
-
-/**
- * Routes
- *   GET,PUT,DELETE /tags/:id
- */
-
-router.route('/:id')
-  .all(TagsController.find_or_404)
-  .get(TagsController.show)
-  .put(TagsController.update)
-  .delete(TagsController.destroy)
 
 /**
  * Export router

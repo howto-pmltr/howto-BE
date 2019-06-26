@@ -11,19 +11,27 @@ const db = require('../db/client')
  */
 
 class ArticleTag {
-  static async all() {
-    return await db('article_tags')
+  static async all(filter) {
+    if (filter) {
+      return await db('article_tags').where(filter).orderBy('tag_title', 'asc')
+    } else {
+      return await db('article_tags').orderBy('tag_title', 'asc')
+    }
   }
 
-  static async create(tag) {
-    const [ids] = await db('article_tags').insert({
-      article_id: tag.article_id,
-      tag_title: tag.tag_title
-    }, ['id'])
+  static async create(user_id, article_id, tag_title) {
+    const user = await db('users').where({ id: user_id }).first()
+    const article = await db('articles').where({ id: article_id }).first()
+    if (user.username !== article.author_username) {
+      return false
+    }
 
-    const new_tag = await db('article_tags').where({ id: ids.id }).first()
+    const changes = { article_id: article_id, tag_title: tag_title }
+    const [returning_obj] = await db('article_tags').insert(changes, ['id'])
 
-    return new_tag
+    const new_article_tag = await db('article_tags').where({ id: returning_obj.id }).first()
+
+    return new_article_tag
   }
 
   static async find(filter) {

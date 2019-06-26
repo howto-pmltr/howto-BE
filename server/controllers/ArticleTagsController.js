@@ -5,12 +5,14 @@
  */
 
 const ArticleTag = require('../models/ArticleTag')
+const Article = require('../models/Article')
+const Step = require('../models/Step')
 
 /**
  * Define controller
  */
 
-class ArticleArticleTagsController {
+class ArticleTagsController {
   static async find_or_404(req, res, next) {
     try {
       const tag = await ArticleTag.find({ id: req.params.id })
@@ -28,7 +30,7 @@ class ArticleArticleTagsController {
 
   static async index(req, res) {
     try {
-      const tags = await ArticleTag.all()
+      const tags = await ArticleTag.all({ article_id: req.params.article_id })
 
       res.status(200).json(tags)
     } catch(err) {
@@ -39,9 +41,16 @@ class ArticleArticleTagsController {
 
   static async create(req, res) {
     try {
-      const tag = await ArticleTag.create(req.body)
+      const user_id = req.decoded.subject
+      const tag = await ArticleTag.create(user_id, req.params.article_id, req.body.tag_title)
 
-      res.status(201).json(tag)
+      if (tag) {
+        const article = await Article.find({ id: tag.article_id })
+        article.steps = await Step.all({ article_id: article.id })
+        article.tags = await ArticleTag.all({ article_id: article.id })
+
+        res.status(201).json(article)
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })
@@ -86,4 +95,4 @@ class ArticleArticleTagsController {
  * Export controller
  */
 
-module.exports = ArticleArticleTagsController
+module.exports = ArticleTagsController

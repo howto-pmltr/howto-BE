@@ -7,12 +7,13 @@
 const express = require('express')
 const require_body = require('../middleware/checks/require_body')
 const ArticleTagsController = require('../controllers/ArticleTagsController')
+const AuthController = require('../controllers/AuthController')
 
 /**
  * Define router
  */
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 /**
  * Routes
@@ -21,17 +22,18 @@ const router = express.Router()
 
 router.route('/')
   .get(ArticleTagsController.index)
-  .all(require_body(['article_id', 'tag_title']))
+  .all(AuthController.require_jwt_token)
+  .all(require_body(['tag_title']))
   .post(ArticleTagsController.create)
 
 /**
  * Routes
- *   GET,PUT,DELETE /articles/:article_id/tags/:id
+ *   PUT,DELETE /articles/:article_id/tags/:id
  */
 
 router.route('/:id')
   .all(ArticleTagsController.find_or_404)
-  .get(ArticleTagsController.show)
+  .all(AuthController.require_jwt_token)
   .put(ArticleTagsController.update)
   .delete(ArticleTagsController.destroy)
 

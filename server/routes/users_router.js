@@ -7,12 +7,14 @@
 const express = require('express')
 const require_body = require('../middleware/checks/require_body')
 const UsersController = require('../controllers/UsersController')
+const AuthController = require('../controllers/AuthController')
+const ArticlesController = require('../controllers/ArticlesController')
 
 /**
  * Define router
  */
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 /**
  * Routes
@@ -34,19 +36,35 @@ router.route('/signin')
 
 /**
  * Routes
- *   POST /users/signout
+ *   GET,POST /users/:id/articles
  */
 
-router.route('/signout')
-  .post(UsersController.signout)
+router.route('/:id/articles')
+  .all(AuthController.require_jwt_token)
+  .all(UsersController.find_or_404)
+  .get(ArticlesController.authors_index)
+  .all(require_body(['title']))
+  .post(ArticlesController.create)
 
 /**
  * Routes
- *   POST /users/deactivate
+ *   PUT,DELETE /users/:user_id/articles/:id
  */
 
-router.route('/deactivate')
-  .post(UsersController.deactivate)
+router.route('/:user_id/articles/:id')
+  .all(AuthController.require_jwt_token)
+  .all(ArticlesController.find_or_404)
+  .put(ArticlesController.update)
+  .delete(ArticlesController.destroy)
+
+/**
+ * Mount steps sub-router
+ */
+
+router.use('/:user_id/articles/:article_id/steps',
+  ArticlesController.find_or_404,
+  require('./steps_router')
+)
 
 /**
  * Export router

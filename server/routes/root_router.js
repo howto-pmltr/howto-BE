@@ -11,7 +11,7 @@ const RootController = require('../controllers/RootController')
  * Define router
  */
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 
 /**
  * Routes
