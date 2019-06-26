@@ -49,9 +49,9 @@ class Step {
     const changes = {}
     changes.updated_at = new Date()
 
-    const step = await db('steps').where({ id: id }).first()
+    const old_step = await db('steps').where({ id: id }).first()
     const user = await db('users').where({ id: user_id }).first()
-    const article = await db('articles').where({ id: step.article_id }).first()
+    const article = await db('articles').where({ id: old_step.article_id }).first()
     if (user.username !== article.author_username) {
       return false
     }
@@ -64,9 +64,9 @@ class Step {
   }
 
   static async destroy(user_id, id) {
-    const step = await db('steps').where({ id: id }).first()
+    const old_step = await db('steps').where({ id: id }).first()
     const user = await db('users').where({ id: user_id }).first()
-    const article = await db('articles').where({ id: step.article_id }).first()
+    const article = await db('articles').where({ id: old_step.article_id }).first()
     if (user.username !== article.author_username) {
       return false
     }
