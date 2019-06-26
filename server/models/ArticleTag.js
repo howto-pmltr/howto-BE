@@ -28,7 +28,6 @@ class ArticleTag {
 
     const changes = { article_id: article_id, tag_title: tag_title }
     const [returning_obj] = await db('article_tags').insert(changes, ['id'])
-    console.log('returning_obj', returning_obj)
 
     const new_article_tag = await db('article_tags').where({ id: returning_obj.id }).first()
 
