@@ -93,14 +93,22 @@ class Article {
       return false
     }
 
-    await old_article.update(changes)
+    await db('articles').where({ id: id }).update(changes)
     const new_article = await db('articles').where({ id: id }).first()
 
     return new_article
   }
 
-  static async destroy(id) {
-    return await db('articles').where({ id: id }).del()
+  static async destroy(id, user_id) {
+    const user = await db('users').where({ id: user_id }).first()
+    const old_article = await db('articles').where({ id: id }).first()
+    if (user.username !== old_article.author_username) {
+      return false
+    }
+
+    await db('articles').where({ id: id }).del()
+
+    return true
   }
 }
 

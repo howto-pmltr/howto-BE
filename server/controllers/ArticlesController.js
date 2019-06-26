@@ -103,9 +103,15 @@ class ArticlesController {
 
   static async destroy(req, res) {
     try {
-      await Article.destroy(req.params.id)
+      const user_id = req.decoded.subject
+      const article = await Article.destroy(req.params.id, user_id)
+      console.log('article', article)
 
-      res.status(200).json()
+      if (article) {
+        res.status(200).json()
+      } else {
+        res.status(403).json({ error: { message: 'You can only delete your articles.' } })
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })
