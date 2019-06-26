@@ -30,7 +30,6 @@ router.route('/')
 
 router.route('/:id')
   .all(StepsController.find_or_404)
-  .get(StepsController.show)
   .put(StepsController.update)
   .delete(StepsController.destroy)
 
