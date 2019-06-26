@@ -30,7 +30,16 @@ class ArticlesController {
   static async published_index(req, res) {
     try {
       let filter = {}
-      const articles = await Article.all_published()
+      if (req.query.q) filter.q = req.query.q
+      if (req.query.tags) filter.tags = req.query.tags
+      if (req.query.author) filter.author_username = req.query.author
+      let articles
+
+      if (Object.keys(filter).length > 0) {
+        articles = await Article.all_published(filter)
+      } else {
+        articles = await Article.all_published()
+      }
 
       res.status(200).json(articles)
     } catch(err) {
