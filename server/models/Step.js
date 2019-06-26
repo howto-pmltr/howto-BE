@@ -47,12 +47,16 @@ class Step {
 
   static async update(user_id, id, step) {
     const changes = {}
+    if (article.title) changes.title = article.title
+    if (article.image_path) changes.image_path = article.image_path
+    if (article.step_number) changes.step_number = article.step_number
+    if (article.content) changes.content = article.content
     changes.updated_at = new Date()
 
     const old_step = await db('steps').where({ id: id }).first()
     const user = await db('users').where({ id: user_id }).first()
     const article = await db('articles').where({ id: old_step.article_id }).first()
-    if (user.username !== article.author_username) {
+    if (!article || user.username !== article.author_username) {
       return false
     }
 
