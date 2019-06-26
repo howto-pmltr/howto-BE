@@ -11,8 +11,12 @@ const db = require('../db/client')
  */
 
 class Step {
-  static async all() {
-    return await db('steps')
+  static async all(filter) {
+    if (filter) {
+      return await db('steps').where(filter)
+    } else {
+      return await db('steps')
+    }
   }
 
   static async create(step) {

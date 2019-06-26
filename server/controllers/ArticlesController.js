@@ -5,6 +5,7 @@
  */
 
 const Article = require('../models/Article')
+const Step = require('../models/Step')
 
 /**
  * Define controller
@@ -64,6 +65,8 @@ class ArticlesController {
   static async show(req, res) {
     try {
       const article = await Article.find({ id: req.params.id })
+
+      article.steps = await Step.all({ article_id: article.id })
 
       res.status(200).json(article)
     } catch(err) {

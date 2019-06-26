@@ -26,17 +26,6 @@ class StepsController {
     }
   }
 
-  static async index(req, res) {
-    try {
-      const steps = await Step.all()
-
-      res.status(200).json(steps)
-    } catch(err) {
-      console.error(err)
-      res.status(500).json({ error: { message: 'Internal Server Error' } })
-    }
-  }
-
   static async create(req, res) {
     try {
       const step = await Step.create(req.body)

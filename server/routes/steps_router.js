@@ -16,17 +16,16 @@ const router = express.Router()
 
 /**
  * Routes
- *   GET,POST /articles/:article_id/steps
+ *   POST /users/:user_id/articles/:article_id/steps
  */
 
 router.route('/')
-  .get(StepsController.index)
   .all(require_body(['article_id', 'step_number', 'title']))
   .post(StepsController.create)
 
 /**
  * Routes
- *   GET,PUT,DELETE /articles/:article_id/steps/:id
+ *   GET,PUT,DELETE /users/:user_id/articles/:article_id/steps/:id
  */
 
 router.route('/:id')
