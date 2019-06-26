@@ -34,7 +34,7 @@ class StepsController {
       const step = await Step.create(user_id, req.params.article_id, req.body)
 
       if (step) {
-        const article = Article.find({ id: step.article_id })
+        const article = await Article.find({ id: step.article_id })
         article.steps = await Step.all({ article_id: article.id })
         article.tags = await ArticleTag.all({ article_id: article.id })
 
