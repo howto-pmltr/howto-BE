@@ -45,7 +45,7 @@ class ArticleTagsController {
       const tag = await ArticleTag.create(user_id, req.params.article_id, req.body.tag_title)
 
       if (tag) {
-        const article = Article.find({ id: step.article_id })
+        const article = Article.find({ id: tag.article_id })
         article.steps = await Step.all({ article_id: article.id })
         article.tags = await ArticleTag.all({ article_id: article.id })
 
