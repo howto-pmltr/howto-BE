@@ -13,7 +13,7 @@ const db = require('../db/client')
 class Step {
   static async all(filter) {
     if (filter) {
-      return await db('steps').where(filter)
+      return await db('steps').where(filter).orderBy('step_number', 'desc')
     } else {
       return await db('steps')
     }
