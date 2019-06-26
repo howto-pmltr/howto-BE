@@ -13,9 +13,9 @@ const db = require('../db/client')
 class ArticleTag {
   static async all(filter) {
     if (filter) {
-      return await db('article_tags').where(filter).sortBy('tag_title', 'asc')
+      return await db('article_tags').where(filter).orderBy('tag_title', 'asc')
     } else {
-      return await db('article_tags').sortBy('tag_title', 'asc')
+      return await db('article_tags').orderBy('tag_title', 'asc')
     }
   }
 
