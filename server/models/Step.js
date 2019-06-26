@@ -21,8 +21,10 @@ class Step {
 
   static async create(step) {
     const [ids] = await db('steps').insert({
+      image_path: step.image_path,
       title: step.title,
-      content: step.content
+      content: step.content,
+      step_number: step.step_number,
     }, ['id'])
 
     const new_step = await db('steps').where({ id: ids.id }).first()

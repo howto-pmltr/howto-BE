@@ -20,7 +20,7 @@ const router = express.Router()
  */
 
 router.route('/')
-  .all(require_body(['article_id', 'step_number', 'title']))
+  .all(require_body(['step_number', 'title']))
   .post(StepsController.create)
 
 /**

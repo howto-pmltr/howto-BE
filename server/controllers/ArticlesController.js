@@ -53,7 +53,8 @@ class ArticlesController {
 
   static async create(req, res) {
     try {
-      const article = await Article.create(req.body)
+      const user_id = req.decoded.subject
+      const article = await Article.create(user_id, req.body)
 
       res.status(201).json(article)
     } catch(err) {

@@ -25,10 +25,9 @@ class Article {
     return await db('articles').where({ author_username: user.username })
   }
 
-  static async create(article) {
+  static async create(user_id, article) {
     const changes = {}
 
-    if (article.author_username) changes.author_username = article.author_username
     if (article.title) changes.title = article.title
     if (article.image_path) changes.image_path = article.image_path
     if (article.description) changes.description = article.description
@@ -37,6 +36,9 @@ class Article {
     } else {
       changes.published_at = null
     }
+
+    const user = await db('users').where({ id: user_id }).first()
+    article.author_username = user.author_username
 
     const [ids] = await db('articles').insert(changes, ['id'])
 
@@ -61,7 +63,7 @@ class Article {
     }
     changes.updated_at = new Date()
 
-    const user = await db('users').where({ id: user_id })
+    const user = await db('users').where({ id: user_id }).first()
     const old_article = await db('articles').where({ id: id }).first()
     if (user.username !== old_article.author_username) {
       return false

@@ -79,11 +79,8 @@ router.route('/:user_id/articles/:id')
 
 router.use('/:user_id/articles/:article_id/steps',
   ArticlesController.find_or_404,
-  (req, res) => {
-    res.sendStatus(200)
-  }
+  require('./steps_router')
 )
-// require('./steps_router')
 
 /**
  * Export router
