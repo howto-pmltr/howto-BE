@@ -19,13 +19,22 @@ class Step {
     }
   }
 
-  static async create(step) {
-    const [ids] = await db('steps').insert({
-      image_path: step.image_path,
-      title: step.title,
-      content: step.content,
-      step_number: step.step_number,
-    }, ['id'])
+  static async create(user_id, article_id, step) {
+    const changes = {}
+
+    changes.article_id = article_id
+    if (step.image_path) changes.image_path = step.image_path
+    if (step.title) changes.title = step.title
+    if (step.content) changes.content = step.content
+    if (step.step_number) changes.step_number = step.step_number
+
+    const user = await db('users').where({ id: user_id }).first()
+    const article = await db('articles').where({ id: article_id }).first()
+    if (user.username !== article.author_username) {
+      return false
+    }
+
+    const [ids] = await db('steps').insert(changes, ['id'])
 
     const new_step = await db('steps').where({ id: ids.id }).first()
 
