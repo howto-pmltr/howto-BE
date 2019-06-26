@@ -34,7 +34,7 @@ class StepsController {
       const step = await Step.create(user_id, req.params.article_id, req.body)
 
       if (step) {
-        const article = Article.find({ id: step.article_id })
+        const article = await Article.find({ id: step.article_id })
         article.steps = await Step.all({ article_id: article.id })
         article.tags = await ArticleTag.all({ article_id: article.id })
 
@@ -54,7 +54,11 @@ class StepsController {
       const step = await Step.update(user_id, req.params.id, req.body)
 
       if (step) {
-        res.status(200).json(step)
+        const article = await Article.find({ id: step.article_id })
+        article.steps = await Step.all({ article_id: article.id })
+        article.tags = await ArticleTag.all({ article_id: article.id })
+
+        res.status(200).json(article)
       } else {
         res.status(403).json({ error: { message: 'You can only update your articles.' } })
       }

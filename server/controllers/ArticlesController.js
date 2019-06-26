@@ -93,6 +93,9 @@ class ArticlesController {
       const article = await Article.update(req.params.id, req.body, user_id)
 
       if (article) {
+        article.steps = await Step.all({ article_id: article.id })
+        article.tags = await ArticleTag.all({ article_id: article.id })
+
         res.status(200).json(article)
       } else {
         res.status(403).json({ error: { message: 'You can only edit your articles.' } })
