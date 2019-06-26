@@ -21,7 +21,7 @@ const router = express.Router({ mergeParams: true })
 
 router.route('/')
   .get(ArticleTagsController.index)
-  .all(require_body(['article_id', 'tag_title']))
+  .all(require_body(['tag_title']))
   .post(ArticleTagsController.create)
 
 /**

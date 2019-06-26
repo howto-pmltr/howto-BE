@@ -5,6 +5,8 @@
  */
 
 const Step = require('../models/Step')
+const Article = require('../models/Article')
+const ArticleTag = require('../models/ArticleTag')
 
 /**
  * Define controller
@@ -32,7 +34,11 @@ class StepsController {
       const step = await Step.create(user_id, req.params.article_id, req.body)
 
       if (step) {
-        res.status(201).json(step)
+        const article = Article.find({ id: step.article_id })
+        article.steps = await Step.all({ article_id: article.id })
+        article.tags = await ArticleTag.all({ article_id: article.id })
+
+        res.status(201).json(article)
       } else {
         res.status(403).json({ error: { message: 'You can only add steps to your articles.' } })
       }

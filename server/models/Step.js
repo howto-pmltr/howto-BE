@@ -34,9 +34,9 @@ class Step {
       return false
     }
 
-    const [ids] = await db('steps').insert(changes, ['id'])
+    const [returning_obj] = await db('steps').insert(changes, ['id'])
 
-    const new_step = await db('steps').where({ id: ids.id }).first()
+    const new_step = await db('steps').where({ id: returning_obj.id }).first()
 
     return new_step
   }

@@ -5,6 +5,8 @@
  */
 
 const ArticleTag = require('../models/ArticleTag')
+const Article = require('../models/Article')
+const Step = require('../models/Step')
 
 /**
  * Define controller
@@ -39,9 +41,16 @@ class ArticleTagsController {
 
   static async create(req, res) {
     try {
-      const tag = await ArticleTag.create(req.body)
+      const user_id = req.decoded.subject
+      const tag = await ArticleTag.create(user_id, req.params.article_id, req.body.tag_title)
 
-      res.status(201).json(tag)
+      if (tag) {
+        const article = Article.find({ id: step.article_id })
+        article.steps = await Step.all({ article_id: article.id })
+        article.tags = await ArticleTag.all({ article_id: article.id })
+
+        res.status(201).json(article)
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })
