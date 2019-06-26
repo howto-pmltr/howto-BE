@@ -28,9 +28,14 @@ class StepsController {
 
   static async create(req, res) {
     try {
-      const step = await Step.create(req.body)
+      const user_id = req.decoded.subject
+      const step = await Step.create(user_id, req.params.article_id, req.body)
 
-      res.status(201).json(step)
+      if (step) {
+        res.status(201).json(step)
+      } else {
+        res.status(403).json({ error: { message: 'You can only add steps to your articles.' } })
+      }
     } catch(err) {
       console.error(err)
       res.status(500).json({ error: { message: 'Internal Server Error' } })

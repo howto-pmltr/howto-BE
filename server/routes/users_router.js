@@ -40,8 +40,8 @@ router.route('/signin')
  */
 
 router.route('/:id/articles')
-  .all(UsersController.find_or_404)
   .all(AuthController.require_jwt_token)
+  .all(UsersController.find_or_404)
   .get(ArticlesController.authors_index)
   .all(require_body(['title']))
   .post(ArticlesController.create)
@@ -52,8 +52,8 @@ router.route('/:id/articles')
  */
 
 router.route('/:user_id/articles/:id')
-  .all(ArticlesController.find_or_404)
   .all(AuthController.require_jwt_token)
+  .all(ArticlesController.find_or_404)
   .put(ArticlesController.update)
   .delete(ArticlesController.destroy)
 
