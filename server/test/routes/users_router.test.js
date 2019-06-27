@@ -117,7 +117,7 @@ describe('routes', () => {
       expect(res.status).toBe(201)
     })
 
-    test('POST /users/:id/articles - Authorization required', async () => {
+    test('POST /users/:id/articles - authorization required', async () => {
       const res = await supertest(app).post('/users/1/articles')
         .send({
           author_username: 'john',
@@ -130,7 +130,7 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
     })
 
-    test('POST /users/:id/articles - missing request body', async () => {
+    test.only('POST /users/:id/articles - missing request body', async () => {
       const token = await signin(app)
 
       const res = await supertest(app).post('/users/1/articles')
