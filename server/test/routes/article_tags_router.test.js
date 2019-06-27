@@ -35,14 +35,45 @@ describe('routes', () => {
   })
 
   describe('article_tags_router.js', () => {
-    test.todo('GET /articles/:article_id/tags - success')
-    test.todo('GET /articles/:article_id/tags - return empty array if no tags')
-    test.todo('POST /articles/:article_id/tags - success')
-    test.todo('POST /articles/:article_id/tags - missing request body')
-    test.todo('POST /articles/:article_id/tags - missing request body fields')
-    test.todo('PUT /articles/:article_id/tags/:id - success')
-    test.todo('PUT /articles/:article_id/tags/:id - not found')
-    test.todo('DELETE /articles/:article_id/tags/:id - success')
-    test.todo('DELETE /articles/:article_id/tags/:id - not found')
+    test('GET /articles/:article_id/tags - success', async () => {
+      const res = await supertest(app).get('/articles/1/tags')
+      expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body.constructor).toBe(Array)
+      expect(res.body.length).toBe(2)
+    })
+
+    test('GET /articles/:article_id/tags - return empty array if no tags', async () => {
+      const res = await supertest(app).get('/articles/1/tags')
+    })
+
+    test('POST /articles/:article_id/tags - success', async () => {
+      const res = await supertest(app).post('/articles/1/tags')
+    })
+
+    test('POST /articles/:article_id/tags - missing request body', async () => {
+      const res = await supertest(app).post('/articles/1/tags')
+    })
+
+    test('POST /articles/:article_id/tags - missing request body fields', async () => {
+      const res = await supertest(app).post('/articles/1/tags')
+    })
+
+    test('PUT /articles/:article_id/tags/:id - success', async () => {
+      const res = await supertest(app).put('/articles/1/tags/1')
+    })
+
+    test('PUT /articles/:article_id/tags/:id - not found', async () => {
+      const res = await supertest(app).put('/articles/1/tags/1')
+    })
+
+    test('DELETE /articles/:article_id/tags/:id - success', async () => {
+      const res = await supertest(app).delete('/articles/1/tags/1')
+    })
+
+    test('DELETE /articles/:article_id/tags/:id - not found', async () => {
+      const res = await supertest(app).delete('/articles/1/tags/1')
+    })
   })
 })
