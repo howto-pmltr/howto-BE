@@ -7,6 +7,7 @@
 const supertest = require('supertest')
 const app = require('../../app')
 const db = require('../../db/client')
+const signin = require('../helpers/signin')
 
 /**
  * Hooks
@@ -52,6 +53,14 @@ describe('routes', () => {
       expect(res.body).toBeTruthy()
       expect(res.body.constructor).toBe(Array)
       expect(res.body.length).toBe(0)
+    })
+
+    test('POST /tags - authorization required', async () => {
+      const res = await supertest(app).post('/tags')
+      expect(res.status).toBe(401)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
     })
 
     test('POST /tags - success', async () => {
