@@ -110,6 +110,16 @@ class Article {
 
     return true
   }
+
+  static async like(filter) {
+    const article = await db('articles').where(filter).first()
+
+    await db('articles').where(filter).update({ likes_count: article.likes_count + 1 })
+
+    const new_article = await db('articles').where(filter).first()
+
+    return new_article
+  }
 }
 
 /**

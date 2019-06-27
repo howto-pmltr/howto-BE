@@ -87,6 +87,20 @@ class ArticlesController {
     }
   }
 
+  static async like(req, res) {
+    try {
+      const article = await Article.like({ id: req.params.id })
+
+      article.steps = await Step.all({ article_id: article.id })
+      article.tags = await ArticleTag.all({ article_id: article.id })
+
+      res.status(200).json(article)
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({ error: { message: 'Internal Server Error' } })
+    }
+  }
+
   static async update(req, res) {
     try {
       const user_id = req.decoded.subject
