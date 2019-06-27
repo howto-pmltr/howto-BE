@@ -117,11 +117,12 @@ describe('routes', () => {
     test('DELETE /articles/:article_id/steps/:id - not found', async () => {
       const token = await signin(app)
 
-      const res = await supertest(app).delete('/users/1/articles/1/steps/1')
+      const res = await supertest(app).delete('/users/1/articles/1/steps/99')
         .set('Authorization', token)
       expect(res.status).toBe(404)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Step not found' } })
     })
   })
 })
