@@ -55,7 +55,7 @@ describe('routes', () => {
       expect(res.status).toBe(400)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
-      expect(res.body[0]).toMatchObject({ error: { message: 'User with that username already exists.' } })
+      expect(res.body).toMatchObject({ error: { message: 'User with that username already exists.' } })
     })
 
     test('POST /users/signup - email already exists', async () => {
@@ -67,7 +67,7 @@ describe('routes', () => {
       expect(res.status).toBe(400)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
-      expect(res.body[0]).toMatchObject({ error: { message: 'User with that email already exists.' } })
+      expect(res.body).toMatchObject({ error: { message: 'User with that email already exists.' } })
     })
 
     test('POST /users/signin - success', async () => {
@@ -78,7 +78,29 @@ describe('routes', () => {
       expect(res.status).toBe(200)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
-      expect(Object.keys(res.body)).arrayContaining(['user', 'token'])
+      expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['user', 'token']))
+    })
+
+    test('POST /users/signin - invalid credentials', async () => {
+      const res = await supertest(app).post('/users/signin').send({
+        username: 'john',
+        password: 'not-correct-password'
+      })
+      expect(res.status).toBe(401)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Invalid Credentials' } })
+    })
+
+    test('POST /users/signin - user not found', async () => {
+      const res = await supertest(app).post('/users/signin').send({
+        username: 'samantha',
+        password: 'secret'
+      })
+      expect(res.status).toBe(404)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'User not found for samantha' }})
     })
   })
 })
