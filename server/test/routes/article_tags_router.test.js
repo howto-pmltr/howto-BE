@@ -78,6 +78,11 @@ describe('routes', () => {
       const token = await signin(app)
 
       const res = await supertest(app).post('/articles/1/tags')
+        .set('Authorization', token)
+      expect(res.status).toBe(422)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Missing request body' } })
     })
 
     test('POST /articles/:article_id/tags - missing request body fields', async () => {
