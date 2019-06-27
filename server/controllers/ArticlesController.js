@@ -15,7 +15,7 @@ const ArticleTag = require('../models/ArticleTag')
 class ArticlesController {
   static async find_or_404(req, res, next) {
     try {
-      const article = await Article.find({ id: (req.params.id || req.params.article_id) })
+      const article = await Article.find({ id: (req.params.article_id || req.params.id) })
 
       if (article) {
         next()
@@ -32,7 +32,7 @@ class ArticlesController {
     try {
       let filter = {}
       if (req.query.q) filter.q = req.query.q
-      if (req.query.tags) filter.tags = req.query.tags
+      if (req.query.tag) filter.tag = req.query.tag
       if (req.query.author) filter.author_username = req.query.author
       let articles
 
@@ -76,6 +76,20 @@ class ArticlesController {
   static async show(req, res) {
     try {
       const article = await Article.find({ id: req.params.id })
+
+      article.steps = await Step.all({ article_id: article.id })
+      article.tags = await ArticleTag.all({ article_id: article.id })
+
+      res.status(200).json(article)
+    } catch(err) {
+      console.error(err)
+      res.status(500).json({ error: { message: 'Internal Server Error' } })
+    }
+  }
+
+  static async like(req, res) {
+    try {
+      const article = await Article.like({ id: req.params.id })
 
       article.steps = await Step.all({ article_id: article.id })
       article.tags = await ArticleTag.all({ article_id: article.id })

@@ -13,7 +13,8 @@ const Tag = require('../models/Tag')
 class TagsController {
   static async find_or_404(req, res, next) {
     try {
-      const tag = await Tag.find({ id: req.params.id })
+      const tag_id = (req.params.tag_id) ? req.params.tag_id : req.params.id
+      const tag = await Tag.find({ id: (req.params.tag_id || req.params.id) })
 
       if (tag) {
         next()

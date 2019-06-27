@@ -8,7 +8,7 @@ exports.seed = function(knex, Promise) {
           id: 1,
           author_username: 'john',
           title: 'How To Example #1',
-          description: 'This is an example how-to article.'
+          description: 'This is an example how-to article #1.'
         },
       ])
     })

@@ -20,13 +20,15 @@ class Tag {
   }
 
   static async create(tag) {
-    const [ids] = await db('tags').insert({
-      title: tag.title
-    }, ['id'])
-
-    const new_tag = await db('tags').where({ id: ids.id }).first()
-
-    return new_tag
+    if (process.env.NODE_ENV === 'production') {
+      const [ids] = await db('tags').insert({ title: tag.title }, ['id'])
+      const new_tag = await db('tags').where({ id: ids.id }).first()
+      return new_tag
+    } else {
+      const [id] = await db('tags').insert({ title: tag.title })
+      const new_tag = await db('tags').where({ id: id }).first()
+      return new_tag
+    }
   }
 
   static async find(filter) {

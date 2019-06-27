@@ -34,11 +34,15 @@ class Step {
       return false
     }
 
-    const [returning_obj] = await db('steps').insert(changes, ['id'])
-
-    const new_step = await db('steps').where({ id: returning_obj.id }).first()
-
-    return new_step
+    if (process.env.NODE_ENV === 'production') {
+      const [returning_obj] = await db('steps').insert(changes, ['id'])
+      const new_step = await db('steps').where({ id: returning_obj.id }).first()
+      return new_step
+    } else {
+      const [id] = await db('steps').insert(changes)
+      const new_step = await db('steps').where({ id: id }).first()
+      return new_step
+    }
   }
 
   static async find(filter) {

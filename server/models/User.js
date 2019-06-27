@@ -18,15 +18,23 @@ class User {
   }
 
   static async create(user) {
-    const [ids] = await db('users').insert({
-      username: user.username,
-      email: user.email,
-      password_hash: user.password_hash
-    }, ['id'])
-
-    const new_user = await db('users').where({ id: ids.id }).first()
-
-    return new_user
+    if (process.env.NODE_ENV === 'production') {
+      const [ids] = await db('users').insert({
+        username: user.username,
+        email: user.email,
+        password_hash: user.password_hash
+      }, ['id'])
+      const new_user = await db('users').where({ id: ids.id }).first()
+      return new_user
+    } else {
+      const [id] = await db('users').insert({
+        username: user.username,
+        email: user.email,
+        password_hash: user.password_hash
+      })
+      const new_user = await db('users').where({ id: id }).first()
+      return new_user
+    }
   }
 
   static async find(filter) {

@@ -33,6 +33,15 @@ router.route('/:id')
   .get(ArticlesController.show)
 
 /**
+ * Routes
+ *   POST /articles/:id/like
+ */
+
+router.route('/:id/like')
+  .all(ArticlesController.find_or_404)
+  .post(ArticlesController.like)
+
+/**
  * Mount article_tags sub-router
  */
 

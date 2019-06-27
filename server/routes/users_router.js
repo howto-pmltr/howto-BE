@@ -53,6 +53,7 @@ router.route('/:id/articles')
 
 router.route('/:user_id/articles/:id')
   .all(AuthController.require_jwt_token)
+  .all(UsersController.find_or_404)
   .all(ArticlesController.find_or_404)
   .put(ArticlesController.update)
   .delete(ArticlesController.destroy)
@@ -62,6 +63,7 @@ router.route('/:user_id/articles/:id')
  */
 
 router.use('/:user_id/articles/:article_id/steps',
+  UsersController.find_or_404,
   ArticlesController.find_or_404,
   require('./steps_router')
 )

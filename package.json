@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server/app.js",
     "start:server": "nodemon server/app.js",
-    "test": "cross-env NODE_ENV=test jest",
-    "test:watch": "cross-env NODE_ENV=test jest --watch --verbose"
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test:watch": "cross-env NODE_ENV=test jest --runInBand --watch"
   },
   "repository": {
     "type": "git",

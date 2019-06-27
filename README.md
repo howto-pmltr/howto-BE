@@ -4,9 +4,6 @@ This is the backend server for the How-to project.
 
 [Technical Design Document](https://docs.google.com/document/d/1-PyCnS_z0tpPOpsk8uSG-0ZPBWNjkNzCvtlJoW-CyEk/edit)
 
-[ ] Add seeded data (1 user to login with).
-[ ] TODO change backend URL in heroku 'howto-tldr'.
-
 ## Getting started
 
 Install dependencies:

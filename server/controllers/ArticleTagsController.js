@@ -15,9 +15,9 @@ const Step = require('../models/Step')
 class ArticleTagsController {
   static async find_or_404(req, res, next) {
     try {
-      const tag = await ArticleTag.find({ id: req.params.id })
+      const article_tag = await ArticleTag.find({ id: (req.params.article_tag_id || req.params.id) })
 
-      if (tag) {
+      if (article_tag) {
         next()
       } else {
         res.status(404).json({ error: { message: 'ArticleTag not found' } })
