@@ -7,6 +7,7 @@
 const supertest = require('supertest')
 const app = require('../../app')
 const db = require('../../db/client')
+const signin = require('../helpers/signin')
 
 /**
  * Hooks
@@ -34,7 +35,7 @@ describe('routes', () => {
   })
 
   describe('steps_router.js', () => {
-    test.only('POST /users/:user_id/articles/:article_id/steps - authorization required', async () => {
+    test('POST /users/:user_id/articles/:article_id/steps - authorization required', async () => {
       const res = await supertest(app).post('/users/1/articles/1/steps')
       expect(res.status).toBe(401)
       expect(res.type).toBe('application/json')
@@ -42,9 +43,16 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
     })
 
-    test('POST /users/:user_id/articles/:article_id/steps - success', async () => {
+    test.only('POST /users/:user_id/articles/:article_id/steps - success', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/users/1/articles/1/steps')
-      expect(res.status).toBe(200)
+        .set('Authorization', token)
+        .send({
+          title: 'New Step #X',
+          step_number: 99
+        })
+      expect(res.status).toBe(201)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
     })

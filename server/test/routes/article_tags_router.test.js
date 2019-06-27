@@ -7,6 +7,7 @@
 const supertest = require('supertest')
 const app = require('../../app')
 const db = require('../../db/client')
+const signin = require('../helpers/signin')
 
 /**
  * Hooks
@@ -39,8 +40,6 @@ describe('routes', () => {
     test.todo('POST /articles/:article_id/tags - success')
     test.todo('POST /articles/:article_id/tags - missing request body')
     test.todo('POST /articles/:article_id/tags - missing request body fields')
-    test.todo('GET /articles/:article_id/tags/:id - success')
-    test.todo('GET /articles/:article_id/tags/:id - not found')
     test.todo('PUT /articles/:article_id/tags/:id - success')
     test.todo('PUT /articles/:article_id/tags/:id - not found')
     test.todo('DELETE /articles/:article_id/tags/:id - success')
