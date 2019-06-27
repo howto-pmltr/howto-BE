@@ -64,25 +64,35 @@ describe('routes', () => {
     })
 
     test('POST /tags - success', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/tags')
-      expect(res.status).toBe(200)
+        .set('Authorization', token)
+        .send({ title: 'New Tag' })
+      expect(res.status).toBe(201)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
     })
 
     test('POST /tags - missing request body', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/tags')
-      expect(res.status).toBe(200)
+        .set('Authorization', token)
+      expect(res.status).toBe(422)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Missing request body' } })
     })
 
     test('POST /tags - missing request body fields', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/tags')
-      expect(res.status).toBe(200)
+        .set('Authorization', token)
+      expect(res.status).toBe(422)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
     })
-
   })
 })
