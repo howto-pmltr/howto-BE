@@ -43,17 +43,6 @@ class ArticleTag {
     return await db('article_tags').where(filter).first()
   }
 
-  static async update(id, tag) {
-    const changes = {}
-    changes.updated_at = new Date()
-
-    await db('article_tags').where({ id: id }).update(changes)
-
-    const new_tag = await db('article_tags').where({ id: id }).first()
-
-    return new_tag
-  }
-
   static async destroy(id) {
     return await db('article_tags').where({ id: id }).del()
   }

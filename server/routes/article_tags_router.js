@@ -28,13 +28,12 @@ router.route('/')
 
 /**
  * Routes
- *   PUT,DELETE /articles/:article_id/tags/:id
+ *   DELETE /articles/:article_id/tags/:id
  */
 
 router.route('/:id')
   .all(ArticleTagsController.find_or_404)
   .all(AuthController.require_jwt_token)
-  .put(ArticleTagsController.update)
   .delete(ArticleTagsController.destroy)
 
 /**

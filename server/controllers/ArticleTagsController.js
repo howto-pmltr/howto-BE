@@ -68,17 +68,6 @@ class ArticleTagsController {
     }
   }
 
-  static async update(req, res) {
-    try {
-      const tag = await ArticleTag.update(req.params.id, req.body)
-
-      res.status(200).json(tag)
-    } catch(err) {
-      console.error(err)
-      res.status(500).json({ error: { message: 'Internal Server Error' } })
-    }
-  }
-
   static async destroy(req, res) {
     try {
       await ArticleTag.destroy(req.params.id)
