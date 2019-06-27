@@ -152,7 +152,7 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'Missing fields: title' } })
     })
 
-    test.only('PUT /users/:user_id/articles/:id - success', async () => {
+    test('PUT /users/:user_id/articles/:id - success', async () => {
       const token = await signin(app)
 
       const res = await supertest(app).put('/users/1/articles/1')
@@ -178,7 +178,7 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
     })
 
-    test('PUT /users/:user_id/articles/:id - user not found', async () => {
+    test.only('PUT /users/:user_id/articles/:id - user not found', async () => {
       const token = await signin(app)
 
       const res = await supertest(app).put('/users/99/articles/1')
@@ -190,7 +190,7 @@ describe('routes', () => {
       expect(res.status).toBe(404)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
-      expect(res.body).toMatchObject({ error: { message: 'Not found' } })
+      expect(res.body).toMatchObject({ error: { message: 'User not found' } })
     })
 
     test('DELETE /users/:user_id/articles/:id - success', async () => {

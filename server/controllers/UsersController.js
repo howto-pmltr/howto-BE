@@ -14,7 +14,8 @@ const User = require('../models/User')
 class UsersController {
   static async find_or_404(req, res, next) {
     try {
-      const user = await User.find({ id: req.params.id })
+      const user_id = (req.params.user_id) ? req.params.user_id : req.params.id
+      const user = await User.find({ id: user_id })
 
       if (user) {
         next()
