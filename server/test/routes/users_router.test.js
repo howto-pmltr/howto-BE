@@ -130,7 +130,7 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
     })
 
-    test.only('POST /users/:id/articles - missing request body', async () => {
+    test('POST /users/:id/articles - missing request body', async () => {
       const token = await signin(app)
 
       const res = await supertest(app).post('/users/1/articles').set('Authorization', token)
@@ -144,10 +144,15 @@ describe('routes', () => {
       const token = await signin(app)
 
       const res = await supertest(app).post('/users/1/articles')
-      expect(res.status).toBe(200)
+        .set('Authorization', token)
+        .send({author_username: 'john'})
+      expect(res.status).toBe(422)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Missing fields: title' } })
     })
 
-    test('PUT /users/:user_id/articles/:id - success', async () => {
+    test.only('PUT /users/:user_id/articles/:id - success', async () => {
       const res = await supertest(app).put('/users/1/articles')
       expect(res.status).toBe(200)
     })
