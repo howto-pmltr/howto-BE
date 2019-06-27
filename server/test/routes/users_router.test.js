@@ -153,13 +153,44 @@ describe('routes', () => {
     })
 
     test.only('PUT /users/:user_id/articles/:id - success', async () => {
-      const res = await supertest(app).put('/users/1/articles')
+      const token = await signin(app)
+
+      const res = await supertest(app).put('/users/1/articles/1')
+        .set('Authorization', token)
+        .send({
+          title: 'How To Example',
+          description: 'This is an example how-to article.'
+        })
       expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
     })
 
-    test('PUT /users/:user_id/articles/:id - not found', async () => {
-      const res = await supertest(app).put('/users/1/articles')
-      expect(res.status).toBe(200)
+    test('PUT /users/:user_id/articles/:id - authorization required', async () => {
+      const res = await supertest(app).put('/users/1/articles/1')
+        .send({
+          title: 'How To Example',
+          description: 'This is an example how-to article.'
+        })
+      expect(res.status).toBe(401)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
+    })
+
+    test('PUT /users/:user_id/articles/:id - user not found', async () => {
+      const token = await signin(app)
+
+      const res = await supertest(app).put('/users/99/articles/1')
+        .set('Authorization', token)
+        .send({
+          title: 'How To Example',
+          description: 'This is an example how-to article.'
+        })
+      expect(res.status).toBe(404)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Not found' } })
     })
 
     test('DELETE /users/:user_id/articles/:id - success', async () => {
