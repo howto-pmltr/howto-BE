@@ -25,7 +25,7 @@ class AuthController {
       })
     } else {
       return res.status(401).json({
-        error: 'No token provided, must be set on the Authorization Header',
+        error: { message: 'No token provided, must be set on the Authorization Header' }
       })
     }
   }

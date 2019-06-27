@@ -104,7 +104,7 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'User not found for samantha' }})
     })
 
-    test.only('POST /users/:id/articles - success', async () => {
+    test('POST /users/:id/articles - success', async () => {
       const token = await signin(app)
 
       const res = await supertest(app).post('/users/1/articles')
@@ -117,12 +117,29 @@ describe('routes', () => {
       expect(res.status).toBe(201)
     })
 
+    test('POST /users/:id/articles - Authorization required', async () => {
+      const res = await supertest(app).post('/users/1/articles')
+        .send({
+          author_username: 'john',
+          title: 'How To Example #2',
+          description: 'This is an example how-to article #2.'
+        })
+      expect(res.status).toBe(401)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
+    })
+
     test('POST /users/:id/articles - missing request body', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/users/1/articles')
       expect(res.status).toBe(401)
     })
 
     test('POST /users/:id/articles - missing request body fields', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/users/1/articles')
       expect(res.status).toBe(200)
     })
