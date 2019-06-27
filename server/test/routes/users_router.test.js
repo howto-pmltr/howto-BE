@@ -7,6 +7,7 @@
 const supertest = require('supertest')
 const app = require('../../app')
 const db = require('../../db/client')
+const signin = require('../helpers/signin')
 
 /**
  * Hooks
@@ -101,6 +102,49 @@ describe('routes', () => {
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
       expect(res.body).toMatchObject({ error: { message: 'User not found for samantha' }})
+    })
+
+    test.only('POST /users/:id/articles - success', async () => {
+      const token = await signin(app)
+
+      const res = await supertest(app).post('/users/1/articles')
+        .set('Authorization', token)
+        .send({
+          author_username: 'john',
+          title: 'How To Example #2',
+          description: 'This is an example how-to article #2.'
+        })
+      expect(res.status).toBe(201)
+    })
+
+    test('POST /users/:id/articles - missing request body', async () => {
+      const res = await supertest(app).post('/users/1/articles')
+      expect(res.status).toBe(401)
+    })
+
+    test('POST /users/:id/articles - missing request body fields', async () => {
+      const res = await supertest(app).post('/users/1/articles')
+      expect(res.status).toBe(200)
+    })
+
+    test('PUT /users/:user_id/articles/:id - success', async () => {
+      const res = await supertest(app).put('/users/1/articles')
+      expect(res.status).toBe(200)
+    })
+
+    test('PUT /users/:user_id/articles/:id - not found', async () => {
+      const res = await supertest(app).put('/users/1/articles')
+      expect(res.status).toBe(200)
+    })
+
+    test('DELETE /users/:user_id/articles/:id - success', async () => {
+      const res = await supertest(app).delete('/users/1/articles')
+      expect(res.status).toBe(200)
+    })
+
+    test('DELETE /users/:user_id/articles/:id - not found', async () => {
+      const res = await supertest(app).delete('/users/1/articles')
+      expect(res.status).toBe(200)
     })
   })
 })

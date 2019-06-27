@@ -35,16 +35,24 @@ describe('routes', () => {
   })
 
   describe('articles_router.js', () => {
-    test.todo('GET /articles - success')
-    test.todo('GET /articles - return empty array if no articles')
-    test.todo('POST /articles - success')
-    test.todo('POST /articles - missing request body')
-    test.todo('POST /articles - missing request body fields')
-    test.todo('GET /articles/:id - success')
-    test.todo('GET /articles/:id - not found')
-    test.todo('PUT /articles/:id - success')
-    test.todo('PUT /articles/:id - not found')
-    test.todo('DELETE /articles/:id - success')
-    test.todo('DELETE /articles/:id - not found')
+    test('GET /articles - success', async () => {
+      const res = await supertest(app).get('/articles')
+      expect(res.status).toBe(200)
+    })
+
+    test('GET /articles - return empty array if no articles', async () => {
+      const res = await supertest(app).get('/articles')
+      expect(res.status).toBe(200)
+    })
+
+    test('GET /articles/:id - success', async () => {
+      const res = await supertest(app).get('/articles/1')
+      expect(res.status).toBe(200)
+    })
+
+    test('GET /articles/:id - not found', async () => {
+      const res = await supertest(app).get('/articles/1')
+      expect(res.status).toBe(200)
+    })
   })
 })
