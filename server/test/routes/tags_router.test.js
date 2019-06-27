@@ -84,15 +84,5 @@ describe('routes', () => {
       expect(res.body).toBeTruthy()
       expect(res.body).toMatchObject({ error: { message: 'Missing request body' } })
     })
-
-    test('POST /tags - missing request body fields', async () => {
-      const token = await signin(app)
-
-      const res = await supertest(app).post('/tags')
-        .set('Authorization', token)
-      expect(res.status).toBe(422)
-      expect(res.type).toBe('application/json')
-      expect(res.body).toBeTruthy()
-    })
   })
 })

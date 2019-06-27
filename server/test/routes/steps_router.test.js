@@ -65,6 +65,7 @@ describe('routes', () => {
       expect(res.status).toBe(422)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Missing request body' } })
     })
 
     test('POST /users/:user_id/articles/:article_id/steps - missing field: title', async () => {
