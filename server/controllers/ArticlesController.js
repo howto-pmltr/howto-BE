@@ -32,7 +32,7 @@ class ArticlesController {
     try {
       let filter = {}
       if (req.query.q) filter.q = req.query.q
-      if (req.query.tags) filter.tags = req.query.tags
+      if (req.query.tag) filter.tag = req.query.tag
       if (req.query.author) filter.author_username = req.query.author
       let articles
 

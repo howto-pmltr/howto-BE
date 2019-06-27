@@ -13,24 +13,25 @@ const db = require('../db/client')
 class Article {
   static async all_published(filter) {
     if (filter) {
-      // return await db.from('articles')
-      //   .select({
-      //     id: 'articles.id',
-      //     author_username: 'articles.author_username',
-      //     title: 'articles.title',
-      //     description: 'articles.description',
-      //     published_at: 'articles.published_at',
-      //     likes_count: 'articles.likes_count',
-      //     created_at: 'articles.created_at'
-      //   })
-      //   .innerJoin('article_tags', 'articles.id', 'article_tags.article_id')
-
       if (filter.author_username) {
         return await db('articles').whereNotNull('published_at')
           .where({ author_username: filter.author_username })
-      } else if (filter.tags) {
-        return await db('articles').whereNotNull('published_at')
-        // TODO
+      } else if (filter.tag) {
+        return await db.from('articles')
+          .select({
+            id: 'articles.id',
+            author_username: 'articles.author_username',
+            title: 'articles.title',
+            image_path: 'articles.image_path',
+            description: 'articles.description',
+            published_at: 'articles.published_at',
+            likes_count: 'articles.likes_count',
+            created_at: 'articles.created_at',
+            updated_at: 'articles.updated_at'
+          })
+          .innerJoin('article_tags', 'articles.id', 'article_tags.article_id')
+          .whereNotNull('articles.published_at')
+          .andWhere('article_tags.tag_title', filter.tag)
       } else if (filter.q) {
         return await db('articles').whereNotNull('published_at')
           .where('title', 'like', `%${filter.q}%`)
