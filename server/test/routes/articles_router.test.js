@@ -37,6 +37,10 @@ describe('routes', () => {
     test('GET /articles - success', async () => {
       const res = await supertest(app).get('/articles')
       expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body.constructor).toBe(Array)
+      expect(res.body.length).toBe(0)
     })
 
     test('GET /articles - return empty array if no articles', async () => {
