@@ -59,9 +59,16 @@ describe('routes', () => {
     })
 
     test('POST /articles/:id/like - success', async () => {
-      const res = await supertest(app).post('/articles/1/like')
-      expect(res.status).toBe(200)
-      expect(res.type).toBe('application/json')
+      const res1 = await supertest(app).get('/articles/1')
+      expect(res1.status).toBe(200)
+      expect(res1.body).toBeTruthy()
+      expect(res1.body.likes_count).toBe(null)
+
+      const res2 = await supertest(app).post('/articles/1/like')
+      expect(res2.status).toBe(200)
+      expect(res2.type).toBe('application/json')
+      expect(res2.body).toBeTruthy()
+      expect(res2.body.likes_count).toBe(1)
     })
 
     test('POST /articles/:id/like - not found', async () => {
