@@ -13,7 +13,6 @@ const db = require('../../db/client')
  */
 
 beforeAll(async () => {
-  await db.migrate.rollback(null, true)
   await db.migrate.latest()
 })
 
