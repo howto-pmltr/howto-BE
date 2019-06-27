@@ -112,7 +112,6 @@ describe('routes', () => {
         .set('Authorization', token)
       expect(res.status).toBe(200)
       expect(res.type).toBe('application/json')
-      expect(res.body).toBeTruthy()
     })
 
     test('DELETE /articles/:article_id/steps/:id - not found', async () => {
