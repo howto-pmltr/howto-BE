@@ -50,8 +50,18 @@ describe('routes', () => {
     })
 
     test('GET /articles/:id - not found', async () => {
-      const res = await supertest(app).get('/articles/1')
+      const res = await supertest(app).get('/articles/99')
+      expect(res.status).toBe(404)
+    })
+
+    test('POST /articles/:id/like - success', async () => {
+      const res = await supertest(app).post('/articles/1/like')
       expect(res.status).toBe(200)
+    })
+
+    test('POST /articles/:id/like - not found', async () => {
+      const res = await supertest(app).post('/articles/99/like')
+      expect(res.status).toBe(404)
     })
   })
 })
