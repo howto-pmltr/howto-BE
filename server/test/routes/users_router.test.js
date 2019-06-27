@@ -213,6 +213,7 @@ describe('routes', () => {
 
       const res = await supertest(app).delete('/users/1/articles/1').set('Authorization', token)
       expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
     })
 
     test('DELETE /users/:user_id/articles/:id - authorization required', async () => {

@@ -97,6 +97,9 @@ describe('routes', () => {
       const token = await signin(app)
 
       const res = await supertest(app).delete('/articles/1/tags/1')
+        .set('Authorization', token)
+      expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
     })
 
     test('DELETE /articles/:article_id/tags/:id - not found', async () => {
