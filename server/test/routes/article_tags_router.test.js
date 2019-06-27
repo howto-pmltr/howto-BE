@@ -85,12 +85,6 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'Missing request body' } })
     })
 
-    test('POST /articles/:article_id/tags - missing request body fields', async () => {
-      const token = await signin(app)
-
-      const res = await supertest(app).post('/articles/1/tags')
-    })
-
     test('DELETE /articles/:article_id/tags/:id - authorization required', async () => {
       const res = await supertest(app).delete('/articles/1/tags/1')
       expect(res.status).toBe(401)
@@ -108,7 +102,12 @@ describe('routes', () => {
     test('DELETE /articles/:article_id/tags/:id - not found', async () => {
       const token = await signin(app)
 
-      const res = await supertest(app).delete('/articles/1/tags/1')
+      const res = await supertest(app).delete('/articles/1/tags/99')
+        .set('Authorization', token)
+      expect(res.status).toBe(404)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'ArticleTag not found' } })
     })
   })
 })
