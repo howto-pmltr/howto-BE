@@ -34,7 +34,7 @@ describe('routes', () => {
   })
 
   describe('tags_router.js', () => {
-    test.only('GET /tags - success', async () => {
+    test('GET /tags - success', async () => {
       const res = await supertest(app).get('/tags')
       expect(res.status).toBe(200)
       expect(res.type).toBe('application/json')
