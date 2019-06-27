@@ -133,8 +133,11 @@ describe('routes', () => {
     test.only('POST /users/:id/articles - missing request body', async () => {
       const token = await signin(app)
 
-      const res = await supertest(app).post('/users/1/articles')
-      expect(res.status).toBe(401)
+      const res = await supertest(app).post('/users/1/articles').set('Authorization', token)
+      expect(res.status).toBe(422)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Missing request body' } })
     })
 
     test('POST /users/:id/articles - missing request body fields', async () => {
