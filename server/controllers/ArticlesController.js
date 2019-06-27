@@ -15,7 +15,7 @@ const ArticleTag = require('../models/ArticleTag')
 class ArticlesController {
   static async find_or_404(req, res, next) {
     try {
-      const article = await Article.find({ id: (req.params.id || req.params.article_id) })
+      const article = await Article.find({ id: (req.params.article_id || req.params.id) })
 
       if (article) {
         next()
