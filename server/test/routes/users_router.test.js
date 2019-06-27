@@ -223,9 +223,15 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
     })
 
-    test('DELETE /users/:user_id/articles/:id - not found', async () => {
-      const res = await supertest(app).delete('/users/1/articles/1')
-      expect(res.status).toBe(200)
+    test('DELETE /users/:user_id/articles/:id - article not found', async () => {
+      const token = await signin(app)
+
+      const res = await supertest(app).delete('/users/1/articles/99')
+        .set('Authorization', token)
+      expect(res.status).toBe(404)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'Article not found' } })
     })
   })
 })
