@@ -91,7 +91,15 @@ describe('routes', () => {
       const res = await supertest(app).post('/articles/1/tags')
     })
 
-    test.only('DELETE /articles/:article_id/tags/:id - success', async () => {
+    test('DELETE /articles/:article_id/tags/:id - authorization required', async () => {
+      const res = await supertest(app).delete('/articles/1/tags/1')
+      expect(res.status).toBe(401)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
+    })
+
+    test('DELETE /articles/:article_id/tags/:id - success', async () => {
       const token = await signin(app)
 
       const res = await supertest(app).delete('/articles/1/tags/1')
