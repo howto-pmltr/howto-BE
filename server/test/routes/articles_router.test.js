@@ -55,6 +55,7 @@ describe('routes', () => {
       const res = await supertest(app).get('/articles/99')
       expect(res.status).toBe(404)
       expect(res.type).toBe('application/json')
+      expect(res.body).toMatchObject({ error: { message: 'Article not found' } })
     })
 
     test('POST /articles/:id/like - success', async () => {
