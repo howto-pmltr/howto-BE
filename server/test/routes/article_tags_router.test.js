@@ -55,6 +55,14 @@ describe('routes', () => {
       expect(res.body.length).toBe(0)
     })
 
+    test('POST /articles/:article_id/tags - authorization required', async () => {
+      const res = await supertest(app).post('/articles/1/tags')
+      expect(res.status).toBe(401)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
+    })
+
     test('POST /articles/:article_id/tags - success', async () => {
       const res = await supertest(app).post('/articles/1/tags')
     })
