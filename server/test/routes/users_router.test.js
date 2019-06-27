@@ -209,12 +209,14 @@ describe('routes', () => {
     })
 
     test('DELETE /users/:user_id/articles/:id - success', async () => {
-      const res = await supertest(app).delete('/users/1/articles')
+      const token = await signin(app)
+
+      const res = await supertest(app).delete('/users/1/articles/1').set('Authorization', token)
       expect(res.status).toBe(200)
     })
 
-    test.only('DELETE /users/:user_id/articles/:id - authorization required', async () => {
-      const res = await supertest(app).delete('/users/1/articles')
+    test('DELETE /users/:user_id/articles/:id - authorization required', async () => {
+      const res = await supertest(app).delete('/users/1/articles/1')
       expect(res.status).toBe(401)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
@@ -222,7 +224,7 @@ describe('routes', () => {
     })
 
     test('DELETE /users/:user_id/articles/:id - not found', async () => {
-      const res = await supertest(app).delete('/users/1/articles')
+      const res = await supertest(app).delete('/users/1/articles/1')
       expect(res.status).toBe(200)
     })
   })
