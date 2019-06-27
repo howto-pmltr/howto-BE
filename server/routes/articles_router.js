@@ -37,7 +37,7 @@ router.route('/:id')
  *   POST /articles/:id/like
  */
 
-router.route('/:id')
+router.route('/:id/like')
   .all(ArticlesController.find_or_404)
   .post(ArticlesController.like)
 
