@@ -13,7 +13,6 @@ const db = require('../../db/client')
  */
 
 beforeAll(async () => {
-  await db.migrate.rollback(null, true)
   await db.migrate.latest()
 })
 
@@ -38,21 +37,45 @@ describe('routes', () => {
     test('GET /articles - success', async () => {
       const res = await supertest(app).get('/articles')
       expect(res.status).toBe(200)
-    })
-
-    test('GET /articles - return empty array if no articles', async () => {
-      const res = await supertest(app).get('/articles')
-      expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body.constructor).toBe(Array)
+      expect(res.body.length).toBe(0)
     })
 
     test('GET /articles/:id - success', async () => {
       const res = await supertest(app).get('/articles/1')
       expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body.title).toBe('How To Example #1')
     })
 
     test('GET /articles/:id - not found', async () => {
-      const res = await supertest(app).get('/articles/1')
-      expect(res.status).toBe(200)
+      const res = await supertest(app).get('/articles/99')
+      expect(res.status).toBe(404)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toMatchObject({ error: { message: 'Article not found' } })
+    })
+
+    test('POST /articles/:id/like - success', async () => {
+      const res1 = await supertest(app).get('/articles/1')
+      expect(res1.status).toBe(200)
+      expect(res1.body).toBeTruthy()
+      expect(res1.body.likes_count).toBe(null)
+
+      const res2 = await supertest(app).post('/articles/1/like')
+      expect(res2.status).toBe(200)
+      expect(res2.type).toBe('application/json')
+      expect(res2.body).toBeTruthy()
+      expect(res2.body.likes_count).toBe(1)
+    })
+
+    test('POST /articles/:id/like - not found', async () => {
+      const res = await supertest(app).post('/articles/99/like')
+      expect(res.status).toBe(404)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toMatchObject({ error: { message: 'Article not found' } })
     })
   })
 })
