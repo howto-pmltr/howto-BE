@@ -13,15 +13,15 @@ const db = require('../../db/client')
  */
 
 beforeAll(async () => {
-  // await db.migrate.latest()
+  await db.migrate.latest()
 })
 
 beforeEach(async () => {
-  // await db.seed.run()
+  await db.seed.run()
 })
 
 afterAll(async () => {
-  // await db.migrate.rollback(null, true)
+  await db.migrate.rollback(null, true)
 })
 
 /**
