@@ -64,30 +64,57 @@ describe('routes', () => {
     })
 
     test('POST /articles/:article_id/tags - success', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/articles/1/tags')
+        .set('Authorization', token)
+        .send({ tag_title: 'General' })
+      expect(res.status).toBe(201)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
     })
 
     test('POST /articles/:article_id/tags - missing request body', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/articles/1/tags')
     })
 
     test('POST /articles/:article_id/tags - missing request body fields', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/articles/1/tags')
     })
 
+    test('PUT /articles/:article_id/tags/:id - authorization required', async () => {
+      const res = await supertest(app).put('/articles/1/tags/1')
+      expect(res.status).toBe(401)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
+    })
+
     test('PUT /articles/:article_id/tags/:id - success', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).put('/articles/1/tags/1')
     })
 
     test('PUT /articles/:article_id/tags/:id - not found', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).put('/articles/1/tags/1')
     })
 
     test('DELETE /articles/:article_id/tags/:id - success', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).delete('/articles/1/tags/1')
     })
 
     test('DELETE /articles/:article_id/tags/:id - not found', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).delete('/articles/1/tags/1')
     })
   })
