@@ -27,11 +27,16 @@ class ArticleTag {
     }
 
     const changes = { article_id: article_id, tag_title: tag_title }
-    const [returning_obj] = await db('article_tags').insert(changes, ['id'])
 
-    const new_article_tag = await db('article_tags').where({ id: returning_obj.id }).first()
-
-    return new_article_tag
+    if (process.env.NODE_ENV === 'production') {
+      const [returning_obj] = await db('article_tags').insert(changes, ['id'])
+      const new_article_tag = await db('article_tags').where({ id: returning_obj.id }).first()
+      return new_article_tag
+    } else {
+      const [id] = await db('article_tags').insert(changes)
+      const new_article_tag = await db('article_tags').where({ id: id }).first()
+      return new_article_tag
+    }
   }
 
   static async find(filter) {

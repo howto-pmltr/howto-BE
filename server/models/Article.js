@@ -65,11 +65,15 @@ class Article {
     const user = await db('users').where({ id: user_id }).first()
     changes.author_username = user.username
 
-    const [ids] = await db('articles').insert(changes, ['id'])
-
-    const new_article = await db('articles').where({ id: ids.id }).first()
-
-    return new_article
+    if (process.env.NODE_ENV === 'production') {
+      const [ids] = await db('articles').insert(changes, ['id'])
+      const new_article = await db('articles').where({ id: ids.id }).first()
+      return new_article
+    } else {
+      const [id] = await db('articles').insert(changes)
+      const new_article = await db('articles').where({ id: id }).first()
+      return new_article
+    }
   }
 
   static async find(filter) {

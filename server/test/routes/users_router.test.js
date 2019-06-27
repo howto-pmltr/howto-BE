@@ -34,9 +34,51 @@ describe('routes', () => {
   })
 
   describe('users_router.js', () => {
-    test.todo('POST /users/signup - success')
-    test.todo('POST /users/signin - success')
-    test.todo('POST /users/signout - success')
-    test.todo('POST /users/deactivate - success')
+    test('POST /users/signup - success', async () => {
+      const res = await supertest(app).post('/users/signup').send({
+        username: 'samantha',
+        email: 'samantha@company.com',
+        password: 'secret'
+      })
+      expect(res.status).toBe(201)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['user', 'token']))
+    })
+
+    test('POST /users/signup - username already exists', async () => {
+      const res = await supertest(app).post('/users/signup').send({
+        username: 'john',
+        email: 'john@new-company.com',
+        password: 'secret'
+      })
+      expect(res.status).toBe(400)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body[0]).toMatchObject({ error: { message: 'User with that username already exists.' } })
+    })
+
+    test('POST /users/signup - email already exists', async () => {
+      const res = await supertest(app).post('/users/signup').send({
+        username: 'new-john',
+        email: 'john@company.com',
+        password: 'secret'
+      })
+      expect(res.status).toBe(400)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(res.body[0]).toMatchObject({ error: { message: 'User with that email already exists.' } })
+    })
+
+    test('POST /users/signin - success', async () => {
+      const res = await supertest(app).post('/users/signin').send({
+        username: 'john',
+        password: 'secret'
+      })
+      expect(res.status).toBe(200)
+      expect(res.type).toBe('application/json')
+      expect(res.body).toBeTruthy()
+      expect(Object.keys(res.body)).arrayContaining(['user', 'token'])
+    })
   })
 })
