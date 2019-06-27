@@ -43,7 +43,7 @@ describe('routes', () => {
       expect(res.body).toMatchObject({ error: { message: 'No token provided, must be set on the Authorization Header' } })
     })
 
-    test.only('POST /users/:user_id/articles/:article_id/steps - success', async () => {
+    test('POST /users/:user_id/articles/:article_id/steps - success', async () => {
       const token = await signin(app)
 
       const res = await supertest(app).post('/users/1/articles/1/steps')
@@ -58,60 +58,68 @@ describe('routes', () => {
     })
 
     test('POST /users/:user_id/articles/:article_id/steps - missing request body', async () => {
+      const token = await signin(app)
+
       const res = await supertest(app).post('/users/1/articles/1/steps')
-      expect(res.status).toBe(200)
+        .set('Authorization', token)
+      expect(res.status).toBe(422)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
     })
 
     test('POST /users/:user_id/articles/:article_id/steps - missing field: title', async () => {
-      const res = await supertest(app).post('/users/1/articles/1/steps').send({
-        step_number: 0
-      })
+      const token = await signin(app)
+
+      const res = await supertest(app).post('/users/1/articles/1/steps')
+        .set('Authorization', token)
+        .send({ step_number: 0 })
       expect(res.status).toBe(422)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
       expect(res.body).toMatchObject({ error: { message: 'Missing fields: title' } })
     })
 
-    test('GET /articles/:article_id/steps/:id - success', async () => {
-      const res = await supertest(app).get('/articles/1/steps/1')
-      expect(res.status).toBe(200)
-      expect(res.type).toBe('application/json')
-      expect(res.body).toBeTruthy()
-    })
-
-    test('GET /articles/:article_id/steps/:id - not found', async () => {
-      const res = await supertest(app).get('/articles/1/steps/1')
-      expect(res.status).toBe(200)
-      expect(res.type).toBe('application/json')
-      expect(res.body).toBeTruthy()
-    })
-
     test('PUT /articles/:article_id/steps/:id - success', async () => {
-      const res = await supertest(app).get('/articles/1/steps/1')
+      const token = await signin(app)
+
+      const res = await supertest(app).put('/users/1/articles/1/steps/1')
+        .set('Authorization', token)
+        .send({ title: 'Updated Title' })
       expect(res.status).toBe(200)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
+      expect(res.body.steps).toBeTruthy()
+      expect(res.body.steps.constructor).toBe(Array)
+      expect(res.body.steps.length).toBe(3)
+      expect(res.body.steps[0].title).toBe('Updated Title')
     })
 
     test('PUT /articles/:article_id/steps/:id - not found', async () => {
-      const res = await supertest(app).get('/articles/1/steps/1')
-      expect(res.status).toBe(200)
+      const token = await signin(app)
+
+      const res = await supertest(app).put('/users/1/articles/1/steps/1')
+        .set('Authorization', token)
+      expect(res.status).toBe(404)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
     })
 
     test('DELETE /articles/:article_id/steps/:id - success', async () => {
-      const res = await supertest(app).get('/articles/1/steps/1')
+      const token = await signin(app)
+
+      const res = await supertest(app).delete('/users/1/articles/1/steps/1')
+        .set('Authorization', token)
       expect(res.status).toBe(200)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
     })
 
     test('DELETE /articles/:article_id/steps/:id - not found', async () => {
-      const res = await supertest(app).get('/articles/1/steps/1')
-      expect(res.status).toBe(200)
+      const token = await signin(app)
+
+      const res = await supertest(app).delete('/users/1/articles/1/steps/1')
+        .set('Authorization', token)
+      expect(res.status).toBe(404)
       expect(res.type).toBe('application/json')
       expect(res.body).toBeTruthy()
     })
